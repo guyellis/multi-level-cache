@@ -1,17 +1,33 @@
 'use strict';
 
 var nodeCache = require('../lib/cache-lib/node-cache');
-var redis = require('../lib/cache-lib/redis');
+//var redis = require('../lib/cache-lib/redis');
 var MultiCache = require('..');
 var assert = require('assert');
 var debug = require('debug')('multi:test.multi');
+var _ = require('lodash');
 
 describe('Multi Cache',function(){
-
+  var testRemoteOnly = {
+    useLocalCache: false,
+    useRemoteCache: true
+  };
+  var testLocalOnly = { // jshint ignore:line
+    useLocalCache: true,
+    useRemoteCache: false
+  };
+  var testBothActive = { // jshint ignore:line
+    useLocalCache: true,
+    useRemoteCache: true
+  };
+  var testBothInactive = { // jshint ignore:line
+    useLocalCache: false,
+    useRemoteCache: false
+  };
 
   it('should set/get an object in the local cache only', function(done){
     var localCache = nodeCache();
-    var remoteCache = redis();
+    var remoteCache = nodeCache();
     var options = {
       useLocalCache: true,
       useRemoteCache: false
@@ -31,21 +47,28 @@ describe('Multi Cache',function(){
     });
   });
 
-  it('should set/get an object in the local cache only using cache names instead of objects', function(done){
+  it('should set/get an object in the local cache only using cache names instead of objects',
+    function(done){
     var options = {
       useLocalCache: true,
       useRemoteCache: false
     };
-    var multiCache = new MultiCache('node-cache', 'redis', options);
+    var multiCache = new MultiCache('node-cache', 'node-cache', options);
+    assert.notEqual(multiCache.localCache, multiCache.remoteCache);
     multiCache.set('myKey','myValue',function(err,result){
       assert(!err);
       assert(result);
       debug(result);
       multiCache.get('myKey',function(err,value){
         assert(!err);
-        debug(value);
+        debug('#1 value: %o', value);
         assert.equal(value.myKey,'myValue');
         // TODO: Test that key/value is not in remoteCache
+        multiCache.get('myKey', testRemoteOnly, function(err,value){
+          assert(!err);
+          debug('#2 value: %o', value);
+          assert(_.isEmpty(value));
+        });
         done();
       });
     });
