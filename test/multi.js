@@ -58,16 +58,34 @@ describe('Multi Cache',function(){
     multiCache.set('myKey','myValue',function(err,result){
       assert(!err);
       assert(result);
-      debug(result);
       multiCache.get('myKey',function(err,value){
         assert(!err);
-        debug('#1 value: %o', value);
         assert.equal(value.myKey,'myValue');
-        // TODO: Test that key/value is not in remoteCache
+        // Test that key/value is not in remoteCache
         multiCache.get('myKey', testRemoteOnly, function(err,value){
           assert(!err);
-          debug('#2 value: %o', value);
           assert(_.isEmpty(value));
+        });
+        done();
+      });
+    });
+  });
+
+  it('should create a Multi-Cache without options', function(done){
+    var multiCache = new MultiCache('node-cache', 'node-cache');
+    assert.notEqual(multiCache.localCache, multiCache.remoteCache);
+    multiCache.set('myKey','myValue',function(err,result){
+      assert(!err);
+      assert(result);
+      multiCache.get('myKey',function(err,value){
+        assert(!err);
+        assert.equal(value.myKey,'myValue');
+        // Test that key/value is in remoteCache as well because if
+        // we create the Multi Cache without options then both remote
+        // and local are switched on by default.
+        multiCache.get('myKey', testRemoteOnly, function(err,value){
+          assert(!err);
+          assert.equal(value.myKey,'myValue');
         });
         done();
       });
