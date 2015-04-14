@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require('assert');
-var nodeCache = require('../lib/cache-lib/node-cache');
+var nodeCache = require('../lib/cache-lib/node-cache')();
 var redis = require('../lib/cache-lib/redis');
 
 describe('Validate API',function(){
@@ -11,7 +11,7 @@ describe('Validate API',function(){
     var methods = ['get', 'set', 'del'];
     apis.forEach(function(api){
       methods.forEach(function(method){
-        assert(api.hasOwnProperty(method));
+        assert(api[method]);
         assert(typeof api[method] === 'function');
       });
     });
