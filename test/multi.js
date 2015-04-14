@@ -36,7 +36,7 @@ describe('Multi Cache',function(){
       assert(!err);
       assert(result);
       debug(result);
-      multiCache.delete('myKey',function(err,value){
+      multiCache.del('myKey',function(err,value){
         assert(!err);
         debug(value);
         // TODO: Test that key/value is not in remoteCache
