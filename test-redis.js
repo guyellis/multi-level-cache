@@ -6,5 +6,7 @@ var options = {
 };
 var multiCache = new MultiCache('node-cache', 'redis', options);
 
-multiCache.set('mykey', 'myvalue');
-//multiCache.get('mykey', redis.print)
+multiCache.set('mykey', 'myvalue', function(err, result){
+  console.log(err, result)
+});
+multiCache.get('mykey', redis.print)
