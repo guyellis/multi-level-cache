@@ -4,9 +4,23 @@
   "description": "Manage local and remote caches with a single API",
   "main": "index.js",
   "scripts": {
+    "pre-commit-update": "node_modules/.bin/npm-update-outdated",
     "test": "mocha",
-    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha"
+    "posttest": "jshint .",
+    "jshint": "jshint .",
+    "check-coverage": "istanbul check-coverage --statements 79 --branches 52 --lines 79 --functions 54 ./coverage/coverage.json",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "pre-commit-stash-save": "git stash --keep-index",
+    "post-commit-stash-pop": "git stash pop"
   },
+  "pre-commit": [
+    "pre-commit-update",
+    "jshint",
+    "pre-commit-stash-save",
+    "coverage",
+    "post-commit-stash-pop",
+    "check-coverage"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/guyellis/multi-level-cache.git"
@@ -32,7 +46,9 @@
   "devDependencies": {
     "istanbul": "^0.3.13",
     "jshint": "^2.6.3",
-    "mocha": "^2.2.4"
+    "mocha": "^2.2.4",
+    "npm-update-outdated": "^0.1.4",
+    "pre-commit": "^1.0.6"
   },
   "engines": {
     "node": ">= 0.10.0"

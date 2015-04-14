@@ -1,7 +1,7 @@
 'use strict';
 
 var nodeCache = require('../lib/cache-lib/node-cache');
-var redis = require('../lib/cache-lib/redis');
+//var redis = require('../lib/cache-lib/redis');
 var MultiCache = require('..');
 var assert = require('assert');
 var debug = require('debug')('multi:test.multi');
@@ -31,7 +31,8 @@ describe('Multi Cache',function(){
     });
   });
 
-  it('should set/get an object in the local cache only using cache names instead of objects', function(done){
+  it('should set/get an object in the local cache only using cache names instead of objects',
+    function(done){
     var options = {
       useLocalCache: true,
       useRemoteCache: false
