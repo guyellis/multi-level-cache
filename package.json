@@ -49,7 +49,8 @@
     "jshint": "^2.6.3",
     "mocha": "^2.2.4",
     "npm-update-outdated": "^0.1.4",
-    "pre-commit": "^1.0.6"
+    "pre-commit": "^1.0.6",
+    "sinon" : "^1.14.1"
   },
   "engines": {
     "node": ">= 0.10.0"
