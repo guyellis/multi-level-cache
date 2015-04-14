@@ -11,7 +11,7 @@ describe('Multi Cache',function(){
 
   it('should set/get an object in the local cache only', function(done){
     var localCache = nodeCache();
-    var remoteCache = redis;
+    var remoteCache = redis();
     var options = {
       useLocalCache: true,
       useRemoteCache: false
