@@ -11,7 +11,7 @@ describe('Multi Cache',function(){
 
   it('should set/get an object in the local cache only', function(done){
     var localCache = nodeCache();
-    var remoteCache = redis();
+    var remoteCache = nodeCache();
     var options = {
       useLocalCache: true,
       useRemoteCache: false
@@ -36,7 +36,7 @@ describe('Multi Cache',function(){
       useLocalCache: true,
       useRemoteCache: false
     };
-    var multiCache = new MultiCache('node-cache', 'redis', options);
+    var multiCache = new MultiCache('node-cache', 'node-cache', options);
     multiCache.set('myKey','myValue',function(err,result){
       assert(!err);
       assert(result);
