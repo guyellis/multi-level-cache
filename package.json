@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "pre-commit-update": "node_modules/.bin/npm-update-outdated",
-    "test": "mocha",
+    "test": "mocha --recursive",
     "posttest": "jshint .",
     "jshint": "jshint .",
     "check-coverage": "istanbul check-coverage --statements 79 --branches 70 --functions 54 --lines 79 ./coverage/coverage.json",
-    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- --recursive",
     "pre-commit-stash-save": "git stash --keep-index",
     "post-commit-stash-pop": "git stash pop"
   },

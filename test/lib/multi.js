@@ -1,8 +1,8 @@
 'use strict';
 
-var nodeCache = require('../lib/cache-lib/node-cache');
+var nodeCache = require('../../lib/cache-lib/node-cache');
 //var redis = require('../lib/cache-lib/redis');
-var MultiCache = require('..');
+var MultiCache = require('../..');
 var assert = require('assert');
 var debug = require('debug')('multi:test.multi');
 var _ = require('lodash');
