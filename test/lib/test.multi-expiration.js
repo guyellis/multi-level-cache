@@ -19,9 +19,9 @@ describe('Multi Cache',function(){
   };
 
   it('should evict from cache based on TTL', function (done) {
-    this.timeout(4000);
+    this.timeout(3000);
     var multiCache = new MultiCache('node-cache', 'node-cache', testBothActive);
-    var ttl = 2; // seconds
+    var ttl = 1; // seconds
     multiCache.set('myKey', 'myValue', ttl, function (err, result) {
       assert(!err);
       assert(!_.isEmpty(result));
@@ -45,7 +45,7 @@ describe('Multi Cache',function(){
                 done();
               });
             });
-          }, 3000);
+          }, 2000);
         });
       });
     });
