@@ -138,7 +138,7 @@ describe('Multi Cache',function(){
       });
     });
 
-    it.only('should return an error for neither caches during get', function (done) {
+    it('should return an error for neither caches during get', function (done) {
       var multiCache = new MultiCache('node-cache', 'node-cache', testBothActive);
       assert.notEqual(multiCache.localCache, multiCache.remoteCache);
       multiCache.set('myKey', 'myValue', function (err, result) {
