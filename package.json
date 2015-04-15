@@ -1,6 +1,6 @@
 {
   "name": "multi-level-cache",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Manage local and remote caches with a single API",
   "main": "index.js",
   "public": true,
@@ -12,7 +12,7 @@
     "test": "mocha --recursive",
     "posttest": "jshint .",
     "jshint": "jshint .",
-    "check-coverage": "istanbul check-coverage --statements 84 --branches 80 --functions 65 --lines 84 ./coverage/coverage.json",
+    "check-coverage": "istanbul check-coverage --statements 96 --branches 92 --functions 95 --lines 96 ./coverage/coverage.json",
     "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- --recursive",
     "pre-commit-stash-save": "git stash --keep-index",
     "post-commit-stash-pop": "git stash pop"
