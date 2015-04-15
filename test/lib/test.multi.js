@@ -164,10 +164,34 @@ describe('Multi Cache',function(){
         multiCache.get('myKey', function (err, value) {
           assert(!err);
           assert.equal(value.myKey, 'myValue');
-          done();
+          // Confirm that key is not in local cache
+          multiCache.get('myKey', testLocalOnly, function (err, value) {
+            assert(!err);
+            assert(_.isEmpty(value));
+            done();
+          });
         });
       });
     });
+
+    it('should set an object in local cache', function (done) {
+      var multiCache = new MultiCache('node-cache', 'node-cache');
+      multiCache.set('myKey', 'myValue', testRemoteOnly, function (err, result) {
+        assert(!err);
+        assert(!_.isEmpty(result));
+        multiCache.get('myKey', {setLocal: true}, function (err, value) {
+          assert(!err);
+          assert.equal(value.myKey, 'myValue');
+          // Confirm that key is now also in local cache
+          multiCache.get('myKey', testLocalOnly, function (err, value) {
+            assert(!err);
+            assert(!_.isEmpty(value));
+            done();
+          });
+        });
+      });
+    });
+
   });
 
   describe('Deleting',function() {
