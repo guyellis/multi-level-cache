@@ -49,7 +49,7 @@ describe('Multi Cache',function(){
     });
   });
 
-  describe('Setting',function() {
+  describe('Setting/Getting',function() {
 
     it('should set an object in the local cache only', function (done) {
       var localCache = nodeCache();
@@ -72,61 +72,86 @@ describe('Multi Cache',function(){
     });
 
     it('should use cache names instead of objects to set locally', function (done) {
-        var multiCache = new MultiCache('node-cache', 'node-cache', testLocalOnly);
-        assert.notEqual(multiCache.localCache, multiCache.remoteCache);
-        multiCache.set('myKey', 'myValue', function (err, result) {
+      var multiCache = new MultiCache('node-cache', 'node-cache', testLocalOnly);
+      assert.notEqual(multiCache.localCache, multiCache.remoteCache);
+      multiCache.set('myKey', 'myValue', function (err, result) {
+        assert(!err);
+        assert(!_.isEmpty(result));
+        multiCache.get('myKey', function (err, value) {
           assert(!err);
-          assert(!_.isEmpty(result));
-          multiCache.get('myKey', function (err, value) {
-            assert(!err);
-            assert.equal(value.myKey, 'myValue');
-            // Test that key/value is not in remoteCache
-            multiCache.get('myKey', testRemoteOnly, function (err, value) {
-              assert(!err);
-              assert(_.isEmpty(value));
-            });
-            done();
-          });
-        });
-      });
-
-    it('should set an object in the remote cache only', function (done) {
-        var multiCache = new MultiCache('node-cache', 'node-cache', testRemoteOnly);
-        assert.notEqual(multiCache.localCache, multiCache.remoteCache);
-        multiCache.set('myKey', 'myValue', function (err, result) {
-          assert(!err);
-          assert(!_.isEmpty(result));
-          multiCache.get('myKey', testLocalOnly, function (err, value) {
+          assert.equal(value.myKey, 'myValue');
+          // Test that key/value is not in remoteCache
+          multiCache.get('myKey', testRemoteOnly, function (err, value) {
             assert(!err);
             assert(_.isEmpty(value));
-            // Test that key/value is in remoteCache
-            multiCache.get('myKey', testRemoteOnly, function (err, value) {
-              assert(!err);
-              assert(!_.isEmpty(value));
-            });
-            done();
           });
+          done();
         });
       });
+    });
 
-    it('should set an object in both remote and local caches', function (done) {
-        var multiCache = new MultiCache('node-cache', 'node-cache', testBothActive);
-        assert.notEqual(multiCache.localCache, multiCache.remoteCache);
-        multiCache.set('myKey', 'myValue', function (err, result) {
+    it('should set an object in the remote cache only', function (done) {
+      var multiCache = new MultiCache('node-cache', 'node-cache', testRemoteOnly);
+      assert.notEqual(multiCache.localCache, multiCache.remoteCache);
+      multiCache.set('myKey', 'myValue', function (err, result) {
+        assert(!err);
+        assert(!_.isEmpty(result));
+        multiCache.get('myKey', testLocalOnly, function (err, value) {
           assert(!err);
-          assert(!_.isEmpty(result));
-          multiCache.get('myKey', testLocalOnly, function (err, value) {
+          assert(_.isEmpty(value));
+          // Test that key/value is in remoteCache
+          multiCache.get('myKey', testRemoteOnly, function (err, value) {
             assert(!err);
             assert(!_.isEmpty(value));
-            // Test that key/value is in remoteCache
-            multiCache.get('myKey', testRemoteOnly, function (err, value) {
-              assert(!err);
-              assert(!_.isEmpty(value));
-            });
-            done();
           });
+          done();
         });
       });
+    });
+
+    it('should set an object in both remote and local caches', function (done) {
+      var multiCache = new MultiCache('node-cache', 'node-cache', testBothActive);
+      assert.notEqual(multiCache.localCache, multiCache.remoteCache);
+      multiCache.set('myKey', 'myValue', function (err, result) {
+        assert(!err);
+        assert(!_.isEmpty(result));
+        multiCache.get('myKey', testLocalOnly, function (err, value) {
+          assert(!err);
+          assert(!_.isEmpty(value));
+          // Test that key/value is in remoteCache
+          multiCache.get('myKey', testRemoteOnly, function (err, value) {
+            assert(!err);
+            assert(!_.isEmpty(value));
+          });
+          done();
+        });
+      });
+    });
+
+    it('should return an error for neither caches during set', function (done) {
+      var multiCache = new MultiCache('node-cache', 'node-cache', testBothInactive);
+      assert.notEqual(multiCache.localCache, multiCache.remoteCache);
+      multiCache.set('myKey', 'myValue', function (err, result) {
+        assert(err);
+        assert(_.isEmpty(result));
+        done();
+      });
+    });
+
+    it.only('should return an error for neither caches during get', function (done) {
+      var multiCache = new MultiCache('node-cache', 'node-cache', testBothActive);
+      assert.notEqual(multiCache.localCache, multiCache.remoteCache);
+      multiCache.set('myKey', 'myValue', function (err, result) {
+        assert(!err);
+        assert(!_.isEmpty(result));
+        multiCache.get('myKey', testBothInactive, function (err, value) {
+          assert(typeof err === 'object');
+          assert(_.isEmpty(value));
+          done();
+        });
+      });
+    });
+
   });
 
   describe('Deleting',function() {
