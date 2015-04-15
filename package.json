@@ -4,6 +4,9 @@
   "description": "Manage local and remote caches with a single API",
   "main": "index.js",
   "public": true,
+  "publishConfig": {
+    "registry":"http://registry.npmjs.org/"
+  },
   "scripts": {
     "pre-commit-update": "node_modules/.bin/npm-update-outdated",
     "test": "mocha --recursive",
