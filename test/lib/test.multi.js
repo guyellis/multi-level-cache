@@ -92,23 +92,100 @@ describe('Multi Cache',function(){
     });
   });
 
-  it.skip('should delete an object in the local cache only', function(done){
-    var multiCache = new MultiCache({
-      localCache: true,
-      remoteCache: false
-    });
+  it('should delete an object in the local cache only', function(done){
+    var multiCache = new MultiCache('node-cache', 'node-cache');
     // Set a key/value in both local and remote caches
     // Set remoteCache to true to override the default from above
-    multiCache.set('myKey','myValue', {remoteCache:true}, function(err,result){
+    multiCache.set('myKey','myValue', function(err,result){
       assert(!err);
       assert(result);
-      debug(result);
-      multiCache.del('myKey',function(err,value){
+      multiCache.del('myKey', testLocalOnly, function(err){
         assert(!err);
-        debug(value);
-        // TODO: Test that key/value is not in remoteCache
-        done();
+        // Check that key has been deleted from local cache but not
+        // from remote cache
+        multiCache.get('myKey', testLocalOnly, function(err,value){
+          assert(!err);
+          assert(_.isEmpty(value));
+          multiCache.get('myKey', testRemoteOnly, function(err,value){
+            assert(!err);
+            assert(!_.isEmpty(value));
+            done();
+          });
+        });
       });
     });
   });
+
+  it('should delete an object in the remote cache only', function(done){
+    var multiCache = new MultiCache('node-cache', 'node-cache');
+    // Set a key/value in both local and remote caches
+    // Set remoteCache to true to override the default from above
+    multiCache.set('myKey','myValue', function(err,result){
+      assert(!err);
+      assert(result);
+      multiCache.del('myKey', testRemoteOnly, function(err){
+        assert(!err);
+        // Check that key has been deleted from local cache but not
+        // from remote cache
+        multiCache.get('myKey', testRemoteOnly, function(err,value){
+          assert(!err);
+          assert(_.isEmpty(value));
+          multiCache.get('myKey', testLocalOnly, function(err,value){
+            assert(!err);
+            assert(!_.isEmpty(value));
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  it('should delete an object in both remote and local caches', function(done){
+    var multiCache = new MultiCache('node-cache', 'node-cache');
+    // Set a key/value in both local and remote caches
+    // Set remoteCache to true to override the default from above
+    multiCache.set('myKey','myValue', function(err,result){
+      assert(!err);
+      assert(result);
+      multiCache.del('myKey', testBothActive, function(err){
+        assert(!err);
+        // Check that key has been deleted from local cache but not
+        // from remote cache
+        multiCache.get('myKey', testRemoteOnly, function(err,value){
+          assert(!err);
+          assert(_.isEmpty(value));
+          multiCache.get('myKey', testLocalOnly, function(err,value){
+            assert(!err);
+            assert(_.isEmpty(value));
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  it('should not delete an object in either remote and local caches', function(done){
+    var multiCache = new MultiCache('node-cache', 'node-cache');
+    // Set a key/value in both local and remote caches
+    // Set remoteCache to true to override the default from above
+    multiCache.set('myKey','myValue', function(err,result){
+      assert(!err);
+      assert(result);
+      multiCache.del('myKey', testBothInactive, function(err){
+        assert(!err);
+        // Check that key has been deleted from local cache but not
+        // from remote cache
+        multiCache.get('myKey', testRemoteOnly, function(err,value){
+          assert(!err);
+          assert(!_.isEmpty(value));
+          multiCache.get('myKey', testLocalOnly, function(err,value){
+            assert(!err);
+            assert(!_.isEmpty(value));
+            done();
+          });
+        });
+      });
+    });
+  });
+
 });

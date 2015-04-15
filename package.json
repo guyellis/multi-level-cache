@@ -8,7 +8,7 @@
     "test": "mocha --recursive",
     "posttest": "jshint .",
     "jshint": "jshint .",
-    "check-coverage": "istanbul check-coverage --statements 80 --branches 78 --functions 52 --lines 80 ./coverage/coverage.json",
+    "check-coverage": "istanbul check-coverage --statements 84 --branches 80 --functions 65 --lines 84 ./coverage/coverage.json",
     "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- --recursive",
     "pre-commit-stash-save": "git stash --keep-index",
     "post-commit-stash-pop": "git stash pop"
