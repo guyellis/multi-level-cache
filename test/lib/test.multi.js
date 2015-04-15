@@ -42,8 +42,8 @@ describe('Multi Cache',function(){
           multiCache.get('myKey', testRemoteOnly, function (err, value) {
             assert(!err);
             assert.equal(value.myKey, 'myValue');
+            done();
           });
-          done();
         });
       });
     });
@@ -65,8 +65,8 @@ describe('Multi Cache',function(){
           multiCache.get('myKey', testRemoteOnly, function(err, value){
             assert(!err);
             assert(_.isEmpty(value));
+            done();
           });
-          done();
         });
       });
     });
@@ -84,8 +84,8 @@ describe('Multi Cache',function(){
           multiCache.get('myKey', testRemoteOnly, function (err, value) {
             assert(!err);
             assert(_.isEmpty(value));
+            done();
           });
-          done();
         });
       });
     });
@@ -103,8 +103,8 @@ describe('Multi Cache',function(){
           multiCache.get('myKey', testRemoteOnly, function (err, value) {
             assert(!err);
             assert(!_.isEmpty(value));
+            done();
           });
-          done();
         });
       });
     });
@@ -122,8 +122,8 @@ describe('Multi Cache',function(){
           multiCache.get('myKey', testRemoteOnly, function (err, value) {
             assert(!err);
             assert(!_.isEmpty(value));
+            done();
           });
-          done();
         });
       });
     });
@@ -152,6 +152,22 @@ describe('Multi Cache',function(){
       });
     });
 
+  });
+
+  describe('Getting',function() {
+
+    it('should get an object from the remote cache if local is empty', function (done) {
+      var multiCache = new MultiCache('node-cache', 'node-cache');
+      multiCache.set('myKey', 'myValue', testRemoteOnly, function (err, result) {
+        assert(!err);
+        assert(!_.isEmpty(result));
+        multiCache.get('myKey', function (err, value) {
+          assert(!err);
+          assert.equal(value.myKey, 'myValue');
+          done();
+        });
+      });
+    });
   });
 
   describe('Deleting',function() {
