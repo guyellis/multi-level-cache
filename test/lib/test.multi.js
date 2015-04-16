@@ -252,6 +252,23 @@ describe('Multi Cache',function(){
       });
     });
 
+    it('should handle the remote cache returning an error on get', function (done) {
+      var multiCache = new MultiCache(localCacheName, remoteCacheName, testBothActive);
+      var remoteStub = sinon.stub(multiCache.remoteCache, 'get', function(keys, callback){
+        return callback('fake error', 'fake value');
+      });
+      multiCache.set('myKey', 'myValue', testRemoteOnly, function (err, result) {
+        assert(!err);
+        assert(!_.isEmpty(result));
+        multiCache.get('myKey', function (err, value) {
+          assert.equal('fake error', err);
+          assert.equal('fake value', value);
+          remoteStub.restore();
+          done();
+        });
+      });
+    });
+
   });
 
   describe('Deleting',function() {
