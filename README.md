@@ -32,7 +32,7 @@ multiCache.get('myKey', function(err, result) {
 
 # API
 
-## var multiCache = new MultiCache(localCache, remoteCache [,options])
+## `new MultiCache(localCache, remoteCache [,options])`
 
 * `localCache`
   * String, such as 'node-cache', representing a cache known by the system
@@ -141,7 +141,7 @@ Use:
   updates the local cache with the data so that when this server makes that request again the local
   cache is able to service the request.
   
-# Use Case: Time insensitive data
+## Use Case: Time insensitive data
   
 Need: You have data that is built by making several (possibly expensive) DB calls and processing
 that data with your business rules. Once the data has been assembled it's good for a given period
@@ -160,7 +160,7 @@ reduce your application's impact on DB resources by only making requests to the 
 of once per minute (for our example) while still keeping all servers relatively up-to-date by using
 a combination of a local and remote cache.
 
-# Use Case: Rate limiting
+## Use Case: Rate limiting
 
 Need: Your application makes calls out to social media applications to use data from their APIs.
 The social media applications have rate limiting associated with the token that you're using or
