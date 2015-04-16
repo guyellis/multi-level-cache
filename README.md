@@ -26,6 +26,79 @@ multiCache.get('myKey', function(err, result) {
 });
 ```
 
+# API
+
+## var multiCache = new MultiCache(localCache, remoteCache [,options])
+
+* `localCache`
+  * String, such as 'node-cache', representing a cache known by the system
+  to use as the local cache.
+  * Object/function that exposes the methods `set`, `get`, `del`
+* `remoteCache`
+  * String, such as 'redis', representing a cache known by the system
+  to use as the remote cache.
+  * Object/function that exposes the methods `set`, `get`, `del`
+* `options`
+  * `useLocalCache` - if set to a truthy value then by default the local
+  cache will be active for all operations. If missing then will default
+  to true.
+  * `useRemoteCache` - if set to a truthy value then by default the remote
+  cache will be active for all operations. If missing then will default
+  to true.
+  * `localOptions` - if a string is passed in for the localCache then set
+  `localOptions` to an object to be used when creating the local cache.
+  * `remoteOptions` - if a string is passed in for the remoteCache then set
+  `remoteOptions` to an object to be used when creating the remote cache.
+
+## `set(key, value[, ttl, options, callback])`
+
+* `key`
+  * The key to use in the cache
+* `value`
+  * The value to be stored against that key
+* `ttl`
+  * The time-to-live for that cache object in seconds.
+* `options`
+  * `useLocalCache` - allows the overriding of the default value for local
+  cache use on an operation-by-operation basis.
+  * `useRemoteCache` - allows the overriding of the default value for remote
+  cache use on an operation-by-operation basis.
+* `callback`
+  * A callback function that will be called with an `error` as the first
+  parameter (if there is one) and the value as the second parameter.
+  * `callback(err, value)`
+
+## `get(keys, [options,] callback)`
+
+* `keys`
+  * The keys to find in the cache
+* `options`
+  * `useLocalCache` - allows the overriding of the default value for local
+  cache use on an operation-by-operation basis.
+  * `useRemoteCache` - allows the overriding of the default value for remote
+  cache use on an operation-by-operation basis.
+  * `setLocal` - If the local cache is empty and the keys are found in the 
+  remote cache and `setLocal` is truthy then the local cache will be updated
+  with the results from the remote cache.
+* `callback`
+  * A callback function that will be called with an `error` as the first
+  parameter (if there is one) and the value as the second parameter.
+  * `callback(err, value)`
+
+## `del(keys, [options,] callback)`
+
+* `keys`
+  * The keys to remove from the cache(s).
+* `options`
+  * `useLocalCache` - allows the overriding of the default value for local
+  cache use on an operation-by-operation basis.
+  * `useRemoteCache` - allows the overriding of the default value for remote
+  cache use on an operation-by-operation basis.
+* `callback`
+  * A callback function that will be called with an `error` as the single
+  parameter (if there is one).
+  * `callback(err)`
+
 # Details
 
 The Multi Level Cache module does not actually do any caching itself.
