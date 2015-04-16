@@ -160,12 +160,23 @@ describe('Multi Cache',function(){
       }, 500);
     });
 
+    it('should throw with no callback and no caches on set()', function (done) {
+      var multiCache = new MultiCache(localCacheName, remoteCacheName, testBothInactive);
+      try {
+        multiCache.set('myKey', 'myValue');
+      } catch(e) {
+        assert.equal('local or remote must be specified when setting to cache', e.message);
+        done();
+      }
+    });
+
     it('should return an error for neither caches during set', function (done) {
       var multiCache = new MultiCache(localCacheName, remoteCacheName, testBothInactive);
       assert.notEqual(multiCache.localCache, multiCache.remoteCache);
       multiCache.set('myKey', 'myValue', function (err, result) {
         assert(err);
         assert(_.isEmpty(result));
+        assert.equal('local or remote must be specified when setting to cache', err.message);
         done();
       });
     });
@@ -179,6 +190,7 @@ describe('Multi Cache',function(){
         multiCache.get('myKey', testBothInactive, function (err, value) {
           assert(typeof err === 'object');
           assert(_.isEmpty(value));
+          assert.equal('local or remote must be specified when getting from cache', err.message);
           done();
         });
       });
