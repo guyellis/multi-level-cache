@@ -1,11 +1,10 @@
 'use strict';
 
 var nodeCache = require('../../lib/cache-lib/node-cache');
-//var redis = require('../lib/cache-lib/redis');
 var MultiCache = require('../..');
 var assert = require('assert');
-//var debug = require('debug')('multi:test.multi');
 var _ = require('lodash');
+var sinon = require('sinon');
 
 describe('Multi Cache',function(){
   var localCacheName = 'node-cache';
@@ -218,7 +217,7 @@ describe('Multi Cache',function(){
       });
     });
 
-    it('should set an object in local cache', function (done) {
+    it('should set an object in local cache if setLocal is true', function (done) {
       var multiCache = new MultiCache(localCacheName, remoteCacheName);
       multiCache.set('myKey', 'myValue', testRemoteOnly, function (err, result) {
         assert(!err);
@@ -232,6 +231,23 @@ describe('Multi Cache',function(){
             assert(!_.isEmpty(value));
             done();
           });
+        });
+      });
+    });
+
+    it('should handle the local cache returning an error on get', function (done) {
+      var multiCache = new MultiCache(localCacheName, remoteCacheName, testBothActive);
+      var localStub = sinon.stub(multiCache.localCache, 'get', function(keys, callback){
+        return callback('fake error', 'fake value');
+      });
+      multiCache.set('myKey', 'myValue', function (err, result) {
+        assert(!err);
+        assert(!_.isEmpty(result));
+        multiCache.get('myKey', function (err, value) {
+          assert.equal('fake error', err);
+          assert.equal('fake value', value);
+          localStub.restore();
+          done();
         });
       });
     });

@@ -3,6 +3,8 @@
 # 0.0.4
 
 * Improved tests
+* Increase test coverage
+* Lock down dependency versions
 
 # 0.0.3
 
