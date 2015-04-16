@@ -79,7 +79,7 @@ describe('Multi Cache',function(){
 
   });
 
-  describe('Setting/Getting',function() {
+  describe('Setting',function() {
 
     it('should set an object in the local cache only', function (done) {
       var multiCache = new MultiCache(localCacheName, remoteCacheName, testLocalOnly);
@@ -136,6 +136,28 @@ describe('Multi Cache',function(){
           });
         });
       });
+    });
+
+    it('should set with two params on set()', function (done) {
+      var multiCache = new MultiCache(localCacheName, remoteCacheName, testBothActive);
+      multiCache.set('myKey', 'myValue');
+      // .set() is async so wait for 500ms before testing that the value
+      // has been set. We're doing this test to check the "else" branch
+      // in the target code.
+      setTimeout(function() {
+        multiCache.get('myKey', testLocalOnly, function (err, value) {
+          assert(!err);
+          assert(!_.isEmpty(value));
+          assert.equal(value.myKey, 'myValue');
+          // Test that key/value is in remoteCache
+          multiCache.get('myKey', testRemoteOnly, function (err, value) {
+            assert(!err);
+            assert(!_.isEmpty(value));
+            assert.equal(value.myKey, 'myValue');
+            done();
+          });
+        });
+      }, 500);
     });
 
     it('should return an error for neither caches during set', function (done) {
