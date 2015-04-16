@@ -2,6 +2,10 @@
 
 Multi Level Cache allows you to manage a local and remote cache with a single API/module.
 
+[![Build Status](https://travis-ci.org/guyellis/multi-level-cache.svg?branch=master)](https://travis-ci.org/guyellis/multi-level-cache)
+[![Code Climate](https://codeclimate.com/github/guyellis/multi-level-cache/badges/gpa.svg)](https://codeclimate.com/github/guyellis/multi-level-cache)
+[![Dependency Status](https://david-dm.org/guyellis/multi-level-cache.png)](https://david-dm.org/guyellis/multi-level-cache)
+
 # Install:
 
 ```

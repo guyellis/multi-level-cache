@@ -3,8 +3,9 @@
 # 0.0.4
 
 * Improved tests
-* Increase test coverage
+* Test coverage to 100%
 * Lock down dependency versions
+* Remove test code from redis wrapper
 
 # 0.0.3
 
