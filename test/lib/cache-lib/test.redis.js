@@ -53,6 +53,8 @@ describe('redis plugin', function(){
     clientStub.get.callsArgWith(1, null, null);
     redisPlugin.get('invalid_key_here', function(err, result){
       assert(clientStub.get.callCount === 1);
+      //insure the stub is called properly on error and on result
+      assert.equal(err, null);
       assert.equal(result, undefined);
       done();
     });
