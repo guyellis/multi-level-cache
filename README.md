@@ -87,6 +87,7 @@ multiCache.get('myKey', function(err, result) {
 * `callback`
   * A callback function that will be called with an `error` as the first
   parameter (if there is one) and the value as the second parameter.
+  * `value` will be undefined if no key is found
   * `callback(err, value)`
 
 ## `del(keys, [options,] callback)`

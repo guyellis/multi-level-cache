@@ -5,7 +5,6 @@ var sinon = require('sinon');
 var redis = require('redis');
 
 var clientStub = {
-
   'get': sinon.stub().callsArg(1),
   'expire': sinon.stub().callsArg(2),
   'del': sinon.stub().callsArg(1),
@@ -42,9 +41,20 @@ describe('redis plugin', function(){
     });
   });
 
-  it('should call get a key', function(done){
+  it('should call get a valid key', function(done){
     redisPlugin.get('testkey', function(){
       assert(clientStub.get.callCount === 1);
+      done();
+    });
+  });
+
+  it('should callback with undefined with an invalid key', function(done){
+    clientStub.get.callsArgWith(1, null, null);
+    redisPlugin.get('invalid_key_here', function(err, result){
+      assert(clientStub.get.callCount === 1);
+      //insure the stub is called properly on error and on result
+      assert.equal(err, null);
+      assert.equal(result, undefined);
       done();
     });
   });
