@@ -197,6 +197,41 @@ describe('Multi Cache',function(){
 
   });
 
+  describe('Disabled',function() {
+
+    it('should noop on set when disabled with callback', function (done) {
+      var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
+      multiCache.set('myKey', 'myValue', function (err, result) {
+        assert(!err);
+        assert.equal(undefined,result);
+        done();
+      });
+    });
+
+    it('should noop on set when disabled without callback', function (done) {
+      var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
+      multiCache.set('myKey', 'myValue');
+      setTimeout(function() {
+        multiCache.get('myKey', function (err, value) {
+          // TODO: Change assert to check for the custom error
+          assert(err);
+          assert.equal(undefined, value);
+          done();
+        });
+      }, 500);
+    });
+
+    it('should noop on del when disabled', function (done) {
+      var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
+      multiCache.del('myKey', function (err, result) {
+        assert.equal(undefined,err);
+        assert.equal(undefined,result);
+        done();
+      });
+    });
+
+  });
+
   describe('Getting',function() {
 
     it('should get an object from the remote cache if local is empty', function (done) {
