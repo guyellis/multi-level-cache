@@ -29,11 +29,11 @@ describe('Multi Cache',function(){
       multiCache.get('myKey', testLocalOnly, function (err, value) {
         assert(!err);
         assert(!_.isEmpty(value));
-        assert.equal(value.myKey, 'myValue');
+        assert.equal(value, 'myValue');
         multiCache.get('myKey', testRemoteOnly, function (err, value) {
           assert(!err);
           assert(!_.isEmpty(value));
-          assert.equal(value.myKey, 'myValue');
+          assert.equal(value, 'myValue');
           // Test that key/value is evicted after 3 seconds
           setTimeout(function () {
             multiCache.get('myKey', testLocalOnly, function (err, value) {
