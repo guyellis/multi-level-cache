@@ -1,20 +1,11 @@
 'use strict';
 
 var assert = require('assert');
-var sinon = require('sinon');
-var redis = require('redis');
+//var sinon = require('sinon');
+//var redis = require('redis');
+var clientStub = require('../../../lib/helpers/redis-stubs').clientStub;
+//var redisCreateClientStub = require('../../../lib/helpers/redis-stubs').redisCreateClientStub;
 
-var clientStub = {
-  'get': sinon.stub().callsArg(1),
-  'expire': sinon.stub().callsArg(2),
-  'del': sinon.stub().callsArg(1),
-  'set': sinon.stub().callsArg(2)
-};
-
-//var redisCreateClientStub =
-sinon.stub(redis, 'createClient', function(){
-  return clientStub;
-});
 
 var redisPlugin = require('../../../lib/cache-lib/redis')({});
 
