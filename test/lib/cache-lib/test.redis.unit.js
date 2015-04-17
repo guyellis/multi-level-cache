@@ -11,6 +11,7 @@ var clientStub = {
   'set': sinon.stub().callsArg(2)
 };
 
+//var redisCreateClientStub =
 sinon.stub(redis, 'createClient', function(){
   return clientStub;
 });
@@ -24,6 +25,14 @@ describe('redis adapter', function(){
     clientStub.expire.reset();
     clientStub.del.reset();
     clientStub.set.reset();
+  });
+
+  after(function(){
+    //redisCreateClientStub.restore();
+    //clientStub.get.restore();
+    //clientStub.expire.restore();
+    //clientStub.del.restore();
+    //clientStub.set.restore();
   });
 
   it('should call set a key with no TTL', function(done){
