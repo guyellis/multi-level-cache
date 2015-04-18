@@ -213,8 +213,9 @@ describe('Multi Cache',function(){
       multiCache.set('myKey', 'myValue');
       setTimeout(function() {
         multiCache.get('myKey', function (err, value) {
-          // TODO: Change assert to check for the custom error
           assert(err);
+          assert.equal(err.name, 'MultiError');
+          assert(err.keyNotFound);
           assert.equal(undefined, value);
           done();
         });
