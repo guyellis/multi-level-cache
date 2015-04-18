@@ -80,7 +80,8 @@ tests.forEach(function(test){
             assert(!err);
             assert.equal(value, 'myValue');
             multiCache.get('myKey', testRemoteOnly, function(err, value){
-              assert(!err);
+              assert(err);
+              assert(err.keyNotFound);
               assert.equal(undefined, value);
               done();
             });
@@ -104,7 +105,8 @@ tests.forEach(function(test){
             assert.equal(value, 'myValue');
             // Test that key/value is not in remoteCache
             multiCache.get('myKey', testRemoteOnly, function (err, value) {
-              assert(!err);
+              assert(err);
+              assert(err.keyNotFound);
               assert.equal(undefined, value);
               done();
             });
@@ -119,7 +121,8 @@ tests.forEach(function(test){
           assert(!err);
           assert(!_.isEmpty(result));
           multiCache.get('myKey', testLocalOnly, function (err, value) {
-            assert(!err);
+            assert(err);
+            assert(err.keyNotFound);
             assert.equal(undefined, value);
             // Test that key/value is in remoteCache
             multiCache.get('myKey', testRemoteOnly, function (err, value) {
@@ -258,7 +261,8 @@ tests.forEach(function(test){
             assert.equal(value, 'myValue');
             // Confirm that key is not in local cache
             multiCache.get('myKey', testLocalOnly, function (err, value) {
-              assert(!err);
+              assert(err);
+              assert(err.keyNotFound);
               assert.equal(undefined, value);
               done();
             });
@@ -334,7 +338,8 @@ tests.forEach(function(test){
             // Check that key has been deleted from local cache but not
             // from remote cache
             multiCache.get('myKey', testLocalOnly, function (err, value) {
-              assert(!err);
+              assert(err);
+              assert(err.keyNotFound);
               assert.equal(undefined, value);
               multiCache.get('myKey', testRemoteOnly, function (err, value) {
                 assert(!err);
@@ -358,7 +363,8 @@ tests.forEach(function(test){
             // Check that key has been deleted from local cache but not
             // from remote cache
             multiCache.get('myKey', testRemoteOnly, function (err, value) {
-              assert(!err);
+              assert(err);
+              assert(err.keyNotFound);
               assert.equal(undefined, value);
               multiCache.get('myKey', testLocalOnly, function (err, value) {
                 assert(!err);
@@ -377,14 +383,16 @@ tests.forEach(function(test){
         multiCache.set('myKey', 'myValue', function (err, result) {
           assert(!err);
           assert(result);
-          multiCache.del('myKey', testBothActive, function (err) {
+          multiCache.del('myKey', function (err) {
             assert(!err);
             // Check that key has been deleted from both caches
             multiCache.get('myKey', testRemoteOnly, function (err, value) {
-              assert(!err);
+              assert(err);
+              assert(err.keyNotFound);
               assert.equal(undefined, value);
               multiCache.get('myKey', testLocalOnly, function (err, value) {
-                assert(!err);
+                assert(err);
+                assert(err.keyNotFound);
                 assert.equal(undefined, value);
                 done();
               });
@@ -491,5 +499,41 @@ tests.forEach(function(test){
       });
     });
 
+    describe('Cache Expiration', function(){
+      it('should evict from cache based on TTL', function (done) {
+        this.timeout(3000);
+        var multiCache = new MultiCache(localCacheName, remoteCacheName);
+        var ttl = 1; // seconds
+        multiCache.set('myKey', 'myValue', ttl, function (err, result) {
+          assert(!err);
+          assert(!_.isEmpty(result));
+          // Check that key is in both local and remote cache
+          multiCache.get('myKey', testLocalOnly, function (err, value) {
+            assert(!err);
+            assert(!_.isEmpty(value));
+            assert.equal(value, 'myValue');
+            multiCache.get('myKey', testRemoteOnly, function (err, value) {
+              assert(!err);
+              assert(!_.isEmpty(value));
+              assert.equal(value, 'myValue');
+              // Test that key/value is evicted after 3 seconds
+              setTimeout(function () {
+                multiCache.get('myKey', testLocalOnly, function (err, value) {
+                  assert(err);
+                  assert(err.keyNotFound);
+                  assert.equal(undefined, value);
+                  multiCache.get('myKey', testRemoteOnly, function (err, value) {
+                    assert(err);
+                    assert(err.keyNotFound);
+                    assert.equal(undefined, value);
+                    done();
+                  });
+                });
+              }, 2000);
+            });
+          });
+        });
+      });
+    });
   });
 });

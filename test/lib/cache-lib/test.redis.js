@@ -17,7 +17,7 @@ sinon.stub(redis, 'createClient', function(){
 
 var redisPlugin = require('../../../lib/cache-lib/redis')({});
 
-describe('redis plugin', function(){
+describe('redis adapter', function(){
 
   afterEach(function(){
     clientStub.get.reset();

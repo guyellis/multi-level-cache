@@ -11,7 +11,7 @@ describe('Multi Cache', function(){
     done();
   });
 
-  it('should be a redis client if the cache type redis', function(done){
+  it('should be a redis client if the cache type is redis', function(done){
     var cache = createCache('redis');
     assert(cache);
     assert(cache.get);
