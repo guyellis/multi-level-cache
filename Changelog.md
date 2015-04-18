@@ -1,5 +1,14 @@
 # Change Log
 
+# 0.0.5
+
+* Switch from JSHint to ESLint
+* Add a custom Error object: MultiError.
+* If key is not present in cache then `get()` will return a MultiError with 
+  keyNotFound set to true.
+* Optional integration testing added.
+* Add ability to disable the cache.
+
 # 0.0.4
 
 * Improved tests

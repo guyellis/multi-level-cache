@@ -42,6 +42,12 @@ multiCache.get('myKey', function(err, result) {
   * String, such as 'redis', representing a cache known by the system
   to use as the remote cache.
   * Object/function that exposes the methods `set`, `get`, `del`
+* `disabled`
+  * Disable the cache to `noop` for get(), set(), del().
+  * `get()` will return `MultiError.keyNotFound`
+  * `set()` and `del()` will do nothing.
+  * Useful for running load tests to compare performance with and without
+  the cache enabled.
 * `options`
   * `useLocalCache` - if set to a truthy value then by default the local
   cache will be active for all operations. If missing then will default
@@ -87,6 +93,8 @@ multiCache.get('myKey', function(err, result) {
 * `callback`
   * A callback function that will be called with an `error` as the first
   parameter (if there is one) and the value as the second parameter.
+  * `error` will be set to a MultiError object if no key is found. The 
+    keyNotFound property will be true.
   * `value` will be undefined if no key is found
   * `callback(err, value)`
 
