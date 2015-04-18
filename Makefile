@@ -8,7 +8,7 @@ test:
 	./node_modules/.bin/istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100 ./coverage/coverage.json
 
 lint:
-	./node_modules/.bin/jshint .
+	./node_modules/.bin/eslint .
 
 test-cov:
 	$(MAKE) lint
