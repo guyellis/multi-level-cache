@@ -3,7 +3,7 @@
 var createCache = require('../../lib/create-cache');
 var assert = require('assert');
 
-describe('Multi Cache',function(){
+describe('Multi Cache', function(){
 
   it('should be null if the cache type is not supported', function(done){
     var cache = createCache('this cache does not exist');

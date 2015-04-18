@@ -6,27 +6,35 @@ var assert = require('assert');
 var _ = require('lodash');
 var sinon = require('sinon');
 
-describe('Multi Cache',function(){
-  var localCacheName = 'node-cache';
-  var remoteCacheName = 'node-cache';
-  var testRemoteOnly = {
-    useLocalCache: false,
-    useRemoteCache: true
-  };
-  var testLocalOnly = {
-    useLocalCache: true,
-    useRemoteCache: false
-  };
-  var testBothActive = {
-    useLocalCache: true,
-    useRemoteCache: true
-  };
-  var testBothInactive = { 
-    useLocalCache: false,
-    useRemoteCache: false
-  };
+describe('Multi Cache', function(){
+  var localCacheName,
+      remoteCacheName,
+      testRemoteOnly,
+      testLocalOnly,
+      testBothActive,
+      testBothInactive;
+  before(function(){
+    localCacheName = 'node-cache';
+    remoteCacheName = 'node-cache';
+    testRemoteOnly = {
+      useLocalCache: false,
+      useRemoteCache: true
+    };
+    testLocalOnly = {
+      useLocalCache: true,
+      useRemoteCache: false
+    };
+    testBothActive = {
+      useLocalCache: true,
+      useRemoteCache: true
+    };
+    testBothInactive = {
+      useLocalCache: false,
+      useRemoteCache: false
+    };
+  });
 
-  describe('Class creation',function() {
+  describe('Class creation', function() {
 
     it('should create a Multi-Cache without options', function (done) {
       var multiCache = new MultiCache(localCacheName, remoteCacheName);
@@ -78,7 +86,7 @@ describe('Multi Cache',function(){
 
   });
 
-  describe('Setting',function() {
+  describe('Setting', function() {
 
     it('should set an object in the local cache only', function (done) {
       var multiCache = new MultiCache(localCacheName, remoteCacheName, testLocalOnly);
@@ -107,7 +115,7 @@ describe('Multi Cache',function(){
         assert(!_.isEmpty(result));
         multiCache.get('myKey', testLocalOnly, function (err, value) {
           assert(!err);
-          assert.equal(undefined, value); 
+          assert.equal(undefined, value);
           // Test that key/value is in remoteCache
           multiCache.get('myKey', testRemoteOnly, function (err, value) {
             assert(!err);
@@ -188,7 +196,7 @@ describe('Multi Cache',function(){
         assert(!_.isEmpty(result));
         multiCache.get('myKey', testBothInactive, function (err, value) {
           assert(typeof err === 'object');
-          assert.equal(undefined, value); 
+          assert.equal(undefined, value);
           assert.equal('local or remote must be specified when getting from cache', err.message);
           done();
         });
@@ -197,13 +205,13 @@ describe('Multi Cache',function(){
 
   });
 
-  describe('Disabled',function() {
+  describe('Disabled', function() {
 
     it('should noop on set when disabled with callback', function (done) {
       var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
       multiCache.set('myKey', 'myValue', function (err, result) {
         assert(!err);
-        assert.equal(undefined,result);
+        assert.equal(undefined, result);
         done();
       });
     });
@@ -225,15 +233,15 @@ describe('Multi Cache',function(){
     it('should noop on del when disabled', function (done) {
       var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
       multiCache.del('myKey', function (err, result) {
-        assert.equal(undefined,err);
-        assert.equal(undefined,result);
+        assert.equal(undefined, err);
+        assert.equal(undefined, result);
         done();
       });
     });
 
   });
 
-  describe('Getting',function() {
+  describe('Getting', function() {
 
     it('should get an object from the remote cache if local is empty', function (done) {
       var multiCache = new MultiCache(localCacheName, remoteCacheName);
@@ -307,7 +315,7 @@ describe('Multi Cache',function(){
 
   });
 
-  describe('Deleting',function() {
+  describe('Deleting', function() {
 
     it('should delete an object in the local cache only', function (done) {
       var multiCache = new MultiCache(localCacheName, remoteCacheName);
@@ -405,7 +413,7 @@ describe('Multi Cache',function(){
     });
   });
 
-  describe('Complex objects',function() {
+  describe('Complex objects', function() {
 
     it('should set and get complex objects', function (done) {
       var multiCache = new MultiCache(localCacheName, remoteCacheName);

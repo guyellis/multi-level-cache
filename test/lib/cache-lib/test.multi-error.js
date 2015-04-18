@@ -3,7 +3,7 @@
 var assert = require('assert');
 var MultiError = require('../../../lib/cache-lib/multi-error');
 
-describe('Multi-Error',function(){
+describe('Multi-Error', function(){
 
   it('should create with params', function(done){
     var multiError = new MultiError();

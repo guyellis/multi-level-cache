@@ -1,0 +1,33 @@
+{
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "no-bitwise": true,
+    "camelcase": true,
+    "curly": true,
+    "eqeqeq": true,
+    "forin": true,
+    "freeze": true,
+    "immed": true,
+    "indent": [2,2],
+    "no-shadow": false,
+    "latedef": true,
+    "newcap": true,
+    "noarg": true,
+    "noempty": true,
+    "nonew": true,
+    "strict": true,
+    "quotes": "single",
+    "max-depth": 3,
+    "trailing": true,
+    "max-statements": 15,
+    "max-len": [2,100,4],
+    "eqnull": true,
+    "funcscope": true,
+    "undef": true,
+    "unused": true,
+    "node": true,
+    "no-underscore-dangle": false
+  }
+}

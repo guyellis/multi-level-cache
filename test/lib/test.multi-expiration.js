@@ -4,7 +4,7 @@ var MultiCache = require('../..');
 var assert = require('assert');
 var _ = require('lodash');
 
-describe('Multi Cache',function(){
+describe('Multi Cache', function(){
   var testRemoteOnly = {
     useLocalCache: false,
     useRemoteCache: true
