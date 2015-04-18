@@ -1,6 +1,7 @@
 # Multi Level Cache
 
 Multi Level Cache allows you to manage a local and remote cache with a single API/module.
+Contact [@wildfiction](https://twitter.com/wildfiction) with questions.
 
 [![Build Status](https://travis-ci.org/guyellis/multi-level-cache.svg?branch=master)](https://travis-ci.org/guyellis/multi-level-cache)
 [![Code Climate](https://codeclimate.com/github/guyellis/multi-level-cache/badges/gpa.svg)](https://codeclimate.com/github/guyellis/multi-level-cache)
@@ -185,3 +186,17 @@ Use:
 when their local last-updated-time expires.
 * Your calls to the API have reduced and aleviated your rate limit problem.
 
+## Use Case: Comparing caches
+
+Need: You want to compare how two different cache implementations will work with your code. Both
+ of the caches are supported by Multi-Level-Cache.
+
+Use:
+
+* Add Multi-Level-Cache to your application.
+* Enable only one of the caches (local or remote) and specify which adapter (cache) you want to
+test first.
+* Run your performance/load tests and then swap the local or remote cache for the other 
+adapter(s) that you want to test and repeat the tests.
+* If an adapter isn't available for a cache that you want to compare then add it to the cache-lib.
+If you think that others might benefit from being able to use this adapter then submit a Pull Request.
