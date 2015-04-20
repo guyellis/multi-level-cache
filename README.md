@@ -45,7 +45,7 @@ multiCache.get('myKey', function(err, result) {
   * Object/function that exposes the methods `set`, `get`, `del`
 * `disabled`
   * Disable the cache to `noop` for get(), set(), del().
-  * `get()` will return `MultiError.keyNotFound`
+  * `get()` will return `MultiError.KeyNotFoundError`
   * `set()` and `del()` will do nothing.
   * Useful for running load tests to compare performance with and without
   the cache enabled.
@@ -88,13 +88,13 @@ multiCache.get('myKey', function(err, result) {
   cache use on an operation-by-operation basis.
   * `useRemoteCache` - allows the overriding of the default value for remote
   cache use on an operation-by-operation basis.
-  * `setLocal` - If the local cache is empty and the keys are found in the 
+  * `setLocal` - If the local cache is empty and the keys are found in the
   remote cache and `setLocal` is truthy then the local cache will be updated
   with the results from the remote cache.
 * `callback`
   * A callback function that will be called with an `error` as the first
   parameter (if there is one) and the value as the second parameter.
-  * `error` will be set to a MultiError object if no key is found. The 
+  * `error` will be set to a MultiError object if no key is found. The
     keyNotFound property will be true.
   * `value` will be undefined if no key is found
   * `callback(err, value)`
@@ -116,7 +116,7 @@ multiCache.get('myKey', function(err, result) {
 # Details
 
 The Multi Level Cache module does not actually do any caching itself.
-It relies on other modules to do the caching and it acts as a way to efficiently manage 
+It relies on other modules to do the caching and it acts as a way to efficiently manage
 a local and remote cache as a single unit.
 
 Adapters are currently provided for the following cache modules:
@@ -150,9 +150,9 @@ Use:
   it bypassing the need to go to the slow source. Because the `setLocal` flag has been set it also
   updates the local cache with the data so that when this server makes that request again the local
   cache is able to service the request.
-  
+
 ## Use Case: Time insensitive data
-  
+
 Need: You have data that is built by making several (possibly expensive) DB calls and processing
 that data with your business rules. Once the data has been assembled it's good for a given period
 of time because the underlying data rarely changes. It's also okay if the server are out-of-sync
@@ -160,12 +160,12 @@ for a short period of time.
 
 Use:
 
-* Check to see if you already have the data available by calling the `get()` method on the 
+* Check to see if you already have the data available by calling the `get()` method on the
 multi-level-cache with the `setLocal` option set to true. `setLocal` will update the local
 cache if the data is only found in the remote cache.
 * If there's nothing in the cache then assemble it from DB calls and processing and use `set()` to
 put it in the caches. When using `set()` specify a TTL of (say) 1 minute.
-* Depending on the size of your cluster of servers and the number of DB calls you make this will 
+* Depending on the size of your cluster of servers and the number of DB calls you make this will
 reduce your application's impact on DB resources by only making requests to the DB around a maximum
 of once per minute (for our example) while still keeping all servers relatively up-to-date by using
 a combination of a local and remote cache.
@@ -196,7 +196,7 @@ Use:
 * Add Multi-Level-Cache to your application.
 * Enable only one of the caches (local or remote) and specify which adapter (cache) you want to
 test first.
-* Run your performance/load tests and then swap the local or remote cache for the other 
+* Run your performance/load tests and then swap the local or remote cache for the other
 adapter(s) that you want to test and repeat the tests.
 * If an adapter isn't available for a cache that you want to compare then add it to the cache-lib.
 If you think that others might benefit from being able to use this adapter then submit a Pull Request.
