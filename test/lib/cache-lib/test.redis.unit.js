@@ -1,58 +1,70 @@
 'use strict';
 
 var assert = require('assert');
-//var sinon = require('sinon');
-//var redis = require('redis');
-var clientStub = require('../../../lib/helpers/redis-stubs').clientStub;
-//var redisCreateClientStub = require('../../../lib/helpers/redis-stubs').redisCreateClientStub;
-
-
 var redisPlugin = require('../../../lib/cache-lib/redis')({});
+
+
+// setup redis for testing w/o our framework
+var redis = require('redis');
+var redisClient = redis.createClient({});
 
 describe('redis adapter', function(){
 
-  afterEach(function(){
-    clientStub.get.reset();
-    clientStub.expire.reset();
-    clientStub.del.reset();
-    clientStub.set.reset();
-  });
+  afterEach(function(done){
+    // remove the test keys each and every time from redis
+    redisClient.del('testkey', function(){
 
-  after(function(){
-    //redisCreateClientStub.restore();
-    //clientStub.get.restore();
-    //clientStub.expire.restore();
-    //clientStub.del.restore();
-    //clientStub.set.restore();
+      done();
+    });
   });
 
   it('should call set a key with no TTL', function(done){
     redisPlugin.set('testkey', 'testvalue', function(){
-      assert(clientStub.set.callCount === 1);
-      done();
+      redisClient.get('testkey', function(err, result){
+        assert.equal(err, null);
+        assert.equal(result, 'testvalue');
+        // no TTL on the key coming in from redis
+        redisClient.ttl('testkey', function(err, result){
+          assert.equal(err, null);
+          assert.equal(result, -1);
+          done();
+        });
+      });
     });
   });
 
   it('should call set a key with a TTL', function(done){
-    redisPlugin.set('testkey', 'testvalue', 1, function(){
-      assert(clientStub.set.callCount === 1);
-      assert(clientStub.expire.callCount === 1);
-      done();
+    redisPlugin.set('testkey', 'testvalue', 15, function(){
+      redisClient.get('testkey', function(err, result){
+        assert.equal(err, null);
+        assert.equal(result, 'testvalue');
+        // 15 second TTL on the key coming in from redis
+        redisClient.ttl('testkey', function(err, result){
+          assert.equal(err, null);
+          assert.equal(result, 15);
+          done();
+        });
+      });
     });
   });
 
   it('should call get a valid key', function(done){
-    redisPlugin.get('testkey', function(){
-      assert(clientStub.get.callCount === 1);
-      done();
+    //setup
+    redisClient.set('testkey', 'testvalue', function(err, result){
+      assert.equal(err, null);
+      assert.equal(result, 'OK');
+      redisPlugin.get('testkey', function(err, result){
+        assert.equal(err, null);
+        assert.equal(result, 'testvalue');
+        done();
+      });
     });
+
   });
 
   it('should callback with undefined with an invalid key', function(done){
-    clientStub.get.callsArgWith(1, null, null);
     redisPlugin.get('invalid_key_here', function(err, result){
-      assert(clientStub.get.callCount === 1);
-      //insure the stub is called properly on error and on result
+      console.log(err, result);
       assert.equal(err, null);
       assert.equal(result, undefined);
       done();
@@ -60,9 +72,15 @@ describe('redis adapter', function(){
   });
 
   it('should call delete a key', function(done){
-    redisPlugin.del('testkey', function(){
-      assert(clientStub.del.callCount === 1);
-      done();
+    redisClient.set('testkey', 'testvalue', function(err, result){
+      assert.equal(err, null);
+      assert.equal(result, 'OK');
+      redisPlugin.del('testkey', function(err, result){
+        assert.equal(err, null);
+        assert.equal(result, 1); // for 1 key deleted
+        done();
+      });
     });
+
   });
 });
