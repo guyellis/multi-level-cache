@@ -12,8 +12,7 @@ describe('redis adapter', function(){
 
   afterEach(function(done){
     // remove the test keys each and every time from redis
-    redisClient.del('testkey', function(){
-
+    redisClient.del('testkey', function(/* err, results */){
       done();
     });
   });
