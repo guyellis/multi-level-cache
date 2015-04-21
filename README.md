@@ -6,6 +6,7 @@ Contact [@wildfiction](https://twitter.com/wildfiction) with questions.
 [![Build Status](https://travis-ci.org/guyellis/multi-level-cache.svg?branch=master)](https://travis-ci.org/guyellis/multi-level-cache)
 [![Code Climate](https://codeclimate.com/github/guyellis/multi-level-cache/badges/gpa.svg)](https://codeclimate.com/github/guyellis/multi-level-cache)
 [![Dependency Status](https://david-dm.org/guyellis/multi-level-cache.png)](https://david-dm.org/guyellis/multi-level-cache)
+[ ![Codeship Status for guyellis/multi-level-cache](https://codeship.com/projects/3d73f870-c9e3-0132-08ef-462805db91a7/status?branch=master)](https://codeship.com/projects/75363)
 
 # Install:
 
