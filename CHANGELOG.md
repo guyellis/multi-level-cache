@@ -1,5 +1,10 @@
 # Change Log
 
+# 0.0.6
+
+* Make KeyNotFound its own custom Error type derived from MultiError called KeyNotFoundError
+* Fix paths for tool references in package.json
+
 # 0.0.5
 
 * Switch from JSHint to ESLint
