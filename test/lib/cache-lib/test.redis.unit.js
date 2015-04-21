@@ -2,7 +2,7 @@
 
 var assert = require('assert');
 var redisPlugin = require('../../../lib/cache-lib/redis')({});
-
+var sinon = require('sinon');
 
 // setup redis for testing w/o our framework
 var redis = require('redis');
@@ -16,6 +16,28 @@ describe('redis adapter', function(){
       done();
     });
   });
+
+  it('should call callback if redis returns an error in get', function(done){
+    var redisStub = sinon.stub(redis, 'createClient', function() {
+      return {
+        get: function (key, callback) {
+          return callback('fake error');
+        }
+      };
+    });
+
+    // This instance of the redis plugin will use our stubbed out redis.clientCreate
+    // above to return an object with a get() that returns an error.
+    var redisPlugin = require('../../../lib/cache-lib/redis')({});
+    redisPlugin.get('testkey', function(err, value){
+      assert(err);
+      assert.equal('fake error', err);
+      assert.equal(undefined, value);
+      redisStub.restore();
+      done();
+    });
+  });
+
 
   it('should call set a key with no TTL', function(done){
     redisPlugin.set('testkey', 'testvalue', function(){
@@ -61,10 +83,13 @@ describe('redis adapter', function(){
 
   });
 
-  it('should callback with undefined with an invalid key', function(done){
-    redisPlugin.get('invalid_key_here', function(err, result){
+  it('should callback with KeyNotFoundError if there is no key', function(done){
+    redisPlugin.get('this key is not in the cache', function(err, result){
       console.log(err, result);
-      assert.equal(err, null);
+      assert(err);
+      assert.equal('MultiError', err.name);
+      assert.equal(true, err.keyNotFound);
+      assert.equal('Key not found in cache', err.message);
       assert.equal(result, undefined);
       done();
     });
