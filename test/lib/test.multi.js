@@ -5,6 +5,7 @@ var MultiCache = require('../..');
 var assert = require('assert');
 var _ = require('lodash');
 var sinon = require('sinon');
+var redis = require('redis');
 
 var integration = [
   ['node-cache', 'node-cache'],
@@ -16,14 +17,40 @@ var integration = [
 
 var unit = [['node-cache', 'node-cache']];
 
-var tests = process.env.NODE_MULTICACHE_TESTTYPE === 'integration' ?
-  integration : unit;
+var isIntegrationTest = process.env.NODE_MULTICACHE_TESTTYPE === 'integration';
+
+var tests = isIntegrationTest ? integration : unit;
+
+// Some notes about why mockRedis() is needed
+// The Redis client library will raise error events if it detects that redis is not
+// available on the default (or specified) ports. These events will bubble up into
+// the tests. It only happens in this test because we use setTimeout which allows
+// node.js to call processNextTick() which bubbles the error events.
+// We only want to do a full integration test when isIntegrationTest is true
+function mockRedis() {
+  if(!isIntegrationTest) {
+    var connectionGoneStub, onErrorStub;
+    before(function () {
+      connectionGoneStub = sinon.stub(redis.RedisClient.prototype, 'connection_gone', function () {
+        // do nothing
+      });
+      onErrorStub = sinon.stub(redis.RedisClient.prototype, 'on_error', function () {
+        // do nothing
+      });
+    });
+    after(function () {
+      connectionGoneStub.restore();
+      onErrorStub.restore();
+    });
+  }
+}
 
 tests.forEach(function(test){
   var key = 'myKey';
   var localCacheName = test[0],
     remoteCacheName = test[1];
   describe('Multi Cache', function(){
+    mockRedis();
     var testRemoteOnly,
         testLocalOnly,
         testBothActive,

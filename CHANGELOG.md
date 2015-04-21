@@ -1,5 +1,9 @@
 # Change Log
 
+# 0.0.9
+
+* Fix test errors caused by Redis error event-emitter 
+
 # 0.0.8
 
 * Fix date deserialization bug in Redis
