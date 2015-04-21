@@ -1,5 +1,9 @@
 # Change Log
 
+# 0.0.8
+
+* Fix date deserialization bug in Redis
+
 # 0.0.7
 
 * Redis implementation completed
