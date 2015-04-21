@@ -1,5 +1,10 @@
 # Change Log
 
+# 0.0.7
+
+* Redis implementation completed
+* Integration tests with Redis completed/fixed.
+
 # 0.0.6
 
 * Make KeyNotFound its own custom Error type derived from MultiError called KeyNotFoundError
