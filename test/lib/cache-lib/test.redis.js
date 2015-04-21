@@ -66,7 +66,9 @@ describe('redis adapter', function(){
 
   it('should call get a valid key', function(done){
     var clientStub = {
-      'get': sinon.stub().callsArg(1)
+      // the value returned from redis is pure JSON, needs to be literal here
+      // increasing testing here to include parser revive function
+      'get': sinon.stub().callsArgWith(1, null, '{"a":"2015-04-21T04:58:20.648Z","b":"something"}')
     };
     var redisStub = sinon.stub(redis, 'createClient', function() {
       return clientStub;
