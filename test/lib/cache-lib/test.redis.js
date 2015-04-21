@@ -121,4 +121,27 @@ describe('redis adapter', function(){
 
 
   });
+
+  it('should not parse strings as dates that contain dates but are not dates', function (done) {
+
+    var clientStub = {
+      // the value returned from redis is pure JSON, needs to be literal here
+      // increasing testing here to include parser revive function
+      'get': sinon.stub().callsArgWith(1, null,
+        '{"a":"{foo:2015-04-21T04:58:20.648Z}","b":"something"}')
+    };
+    var redisStub = sinon.stub(redis, 'createClient', function() {
+      return clientStub;
+    });
+
+    var redisPlugin = require('../../../lib/cache-lib/redis')({});
+    redisPlugin.get('testkey', function(error, cachedValue){
+      // Check for Invalid Date (not a date or not Invalid Date)
+      assert(!cachedValue.a.getTime || !isNaN(cachedValue.a.getTime()));
+      assert.equal(typeof cachedValue.a, 'string');
+      assert.equal(clientStub.get.callCount, 1);
+      redisStub.restore();
+      done();
+    });
+  });
 });
