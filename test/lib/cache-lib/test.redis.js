@@ -118,8 +118,24 @@ describe('redis adapter', function(){
       redisStub.restore();
       done();
     });
+  });
 
+  it('should call flushAll', function(done){
+    var clientStub = {
+      'flushall': function(callback) {
+        callback();
+      }
+    };
+    var redisStub = sinon.stub(redis, 'createClient', function() {
+      return clientStub;
+    });
 
+    var redisPlugin = require('../../../lib/cache-lib/redis')({});
+    redisPlugin.flushAll(function(err){
+      assert(!err);
+      redisStub.restore();
+      done();
+    });
   });
 
   it('should not parse strings as dates that contain dates but are not dates', function (done) {

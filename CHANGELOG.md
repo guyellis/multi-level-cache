@@ -3,6 +3,7 @@
 # 0.0.9
 
 * Fix test errors caused by Redis error event-emitter 
+* Add flushAll()
 
 # 0.0.8
 

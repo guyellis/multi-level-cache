@@ -8,7 +8,7 @@ describe('Validate API', function(){
 
   it('should validate end points of APIs', function(done){
     var apis = [nodeCache, redis];
-    var methods = ['get', 'set', 'del'];
+    var methods = ['get', 'set', 'del', 'flushAll'];
     apis.forEach(function(api){
       methods.forEach(function(method){
         assert(api[method]);

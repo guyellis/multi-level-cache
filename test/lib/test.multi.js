@@ -6,6 +6,7 @@ var assert = require('assert');
 var _ = require('lodash');
 var sinon = require('sinon');
 var redis = require('redis');
+var async = require('async');
 
 var integration = [
   ['node-cache', 'node-cache'],
@@ -49,7 +50,7 @@ tests.forEach(function(test){
   var key = 'myKey';
   var localCacheName = test[0],
     remoteCacheName = test[1];
-  describe('Multi Cache', function(){
+  describe('Multi Cache', function(){ // eslint-disable-line max-statements
     mockRedis();
     var testRemoteOnly,
         testLocalOnly,
@@ -283,6 +284,15 @@ tests.forEach(function(test){
       it('should noop on del when disabled', function (done) {
         var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
         multiCache.del(key, function (err, result) {
+          assert.equal(undefined, err);
+          assert.equal(undefined, result);
+          done();
+        });
+      });
+
+      it('should noop on flushAll when disabled', function (done) {
+        var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
+        multiCache.flushAll(function (err, result) {
           assert.equal(undefined, err);
           assert.equal(undefined, result);
           done();
@@ -546,6 +556,109 @@ tests.forEach(function(test){
           });
         });
       });
+    });
+
+    describe('Flush All', function() {
+      function setBothAndConfirm(multiCache, key, value, callback) {
+        multiCache.set(key, value, testBothActive, function (err, result) {
+          assert(!err);
+          assert(!_.isEmpty(result));
+          // Confirm value from local cache
+          multiCache.get(key, testLocalOnly, function (err, result) {
+            assert(!err);
+            assert(!_.isEmpty(result));
+            assert.equal(result, value);
+            // Confirm value from remote cache
+            multiCache.get(key, testRemoteOnly, function (err, result) {
+              assert(!err);
+              assert(!_.isEmpty(result));
+              assert.equal(result, value);
+              callback();
+            });
+          });
+        });
+      }
+
+      function confirmBothNoKey(multiCache, key, callback) {
+        multiCache.get(key, testLocalOnly, function (err, value) {
+          assert(err);
+          assert(err.keyNotFound);
+          assert(!value);
+          // Confirm value from remote cache
+          multiCache.get(key, testRemoteOnly, function (err, value) {
+            assert(err);
+            assert(err.keyNotFound);
+            assert(!value);
+            callback();
+          });
+        });
+      }
+
+      it('should flush all key/values from the cache', function (done) {
+        var multiCache = new MultiCache(localCacheName, remoteCacheName);
+        setBothAndConfirm(multiCache, key, 'myValue', function(){
+          setBothAndConfirm(multiCache, 'myKey2', 'myValue2', function(){
+            multiCache.flushAll(function(err){
+              assert(!err);
+              confirmBothNoKey(multiCache, key, function(){
+                confirmBothNoKey(multiCache, 'myKey2', function(){
+                  done();
+                });
+              });
+            });
+          });
+        });
+      });
+
+      function confirmNoKeys(multiCache, keys, existLocation, notExistLocation, callback) {
+        async.each(keys, function (key, cb) {
+          multiCache.get(key, existLocation, function (err, value) {
+            assert(!err);
+            assert(value);
+            multiCache.get(key, notExistLocation, function (err, value) {
+              assert(err);
+              assert(err.keyNotFound);
+              assert(!value);
+              cb();
+            });
+          });
+        }, function(err){
+          return callback(err);
+        });
+      }
+
+      it('should flush all key/values from the local cache only', function (done) {
+        var multiCache = new MultiCache(localCacheName, remoteCacheName);
+        setBothAndConfirm(multiCache, key, 'myValue', function(){
+          setBothAndConfirm(multiCache, 'myKey2', 'myValue2', function(){
+            multiCache.flushAll(testLocalOnly, function(err){
+              assert(!err);
+              confirmNoKeys(multiCache, [key, 'myKey2'], testRemoteOnly, testLocalOnly,
+                function(err){
+                assert(!err);
+                done();
+              });
+            });
+          });
+        });
+      });
+
+      it('should flush all key/values from the remote cache only', function (done) {
+        var multiCache = new MultiCache(localCacheName, remoteCacheName);
+        setBothAndConfirm(multiCache, key, 'myValue', function(){
+          setBothAndConfirm(multiCache, 'myKey2', 'myValue2', function(){
+            multiCache.flushAll(testRemoteOnly, function(err){
+              assert(!err);
+              confirmNoKeys(multiCache, [key, 'myKey2'], testLocalOnly, testRemoteOnly,
+                function(err){
+                assert(!err);
+                done();
+              });
+            });
+          });
+        });
+      });
+
     });
 
     describe('Cache Expiration', function(){
