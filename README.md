@@ -26,7 +26,7 @@ multiCache.set('myKey', 'myValue', function(err, result) {
 });
 
 multiCache.get('myKey', function(err, result) {
-  // value is now set to {myKey: 'myValue'}
+  // value is now set to 'myValue'
   // By default it will look in local cache first and then remote
   // cache if not found locally.
 });
