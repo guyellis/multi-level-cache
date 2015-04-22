@@ -7,6 +7,7 @@ var sinon = require('sinon');
 var redis = require('redis');
 var redisAdapter = require('../../../lib/cache-lib/redis');
 
+/*eslint-disable max-statements */
 describe('redis adapter', function(){
 
   it('should call callback if redis returns an error in get', function(done) {
@@ -161,4 +162,41 @@ describe('redis adapter', function(){
       done();
     });
   });
+
+  it('uses default options if no options set', function () {
+    var redisStub = sinon.stub(redis, 'createClient').returns({});
+
+    redisAdapter();
+    assert(redisStub.calledOnce);
+    assert(redisStub.calledWithExactly());
+
+    redisStub.restore();
+  });
+
+  it('uses an options object if passed in', function () {
+    var redisStub = sinon.stub(redis, 'createClient').returns({});
+    var options = {};
+
+    redisAdapter(options);
+    assert(redisStub.calledOnce);
+    assert(redisStub.calledWithExactly(options));
+
+    redisStub.restore();
+  });
+
+  it('uses host and port if passed in', function () {
+    var redisStub = sinon.stub(redis, 'createClient').returns({});
+    var options = {
+      host: 'localhost',
+      port: 123123,
+      x: 'y'
+    };
+
+    redisAdapter(options);
+    assert(redisStub.calledOnce);
+    assert(redisStub.calledWithExactly(options.port, options.host, options));
+
+    redisStub.restore();
+  });
 });
+/*eslint-enable max-statements */
