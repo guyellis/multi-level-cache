@@ -61,7 +61,11 @@ multiCache.get('myKey', function(err, result) {
   `localOptions` to an object to be used when creating the local cache.
   * `remoteOptions` - if a string is passed in for the remoteCache then set
   `remoteOptions` to an object to be used when creating the remote cache.
-
+  * `ttl` - set a default ttl on call cache objects, may be overridden by 
+  setting the ttl during a `set` call.
+  * `disabled` - disable all cache options. This is to facilitate a testing
+  harness, or disabling during CI testing.
+  
 ## `set(key, value[, ttl, options, callback])`
 
 * `key`
