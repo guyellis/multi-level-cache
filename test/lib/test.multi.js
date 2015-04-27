@@ -664,7 +664,7 @@ tests.forEach(function(test){
     describe('Cache Expiration', function(){
       it('should evict from cache based on TTL', function (done) {
         this.timeout(3000);
-        var multiCache = new MultiCache(localCacheName, remoteCacheName);
+        var multiCache = new MultiCache(localCacheName, remoteCacheName, {'ttl': 15});
         var ttl = 1; // seconds
         multiCache.set(key, 'myValue', ttl, function (err, result) {
           assert(!err);
