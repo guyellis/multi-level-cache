@@ -61,11 +61,11 @@ multiCache.get('myKey', function(err, result) {
   `localOptions` to an object to be used when creating the local cache.
   * `remoteOptions` - if a string is passed in for the remoteCache then set
   `remoteOptions` to an object to be used when creating the remote cache.
-  * `ttl` - set a default ttl on call cache objects, may be overridden by 
+  * `ttl` - set a default ttl on call cache objects, may be overridden by
   setting the ttl during a `set` call.
   * `disabled` - disable all cache options. This is to facilitate a testing
   harness, or disabling during CI testing.
-  
+
 ## `set(key, value[, ttl, options, callback])`
 
 * `key`
@@ -130,7 +130,7 @@ Adapters are currently provided for the following cache modules:
 * [redis](https://github.com/mranney/node_redis)
 
 If there is a cache module that you want to use with the Multi Level Cache that's
-not listed above then [add a an issue](https://github.com/guyellis/multi-level-cache/issues) or
+not listed above then [add an issue](https://github.com/guyellis/multi-level-cache/issues) or
 a Pull Request to get it in there.
 
 Here are some ways that you might use this module. The use cases assume that you're running
