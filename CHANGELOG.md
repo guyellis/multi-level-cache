@@ -1,5 +1,13 @@
 # Change Log
 
+# 0.0.11
+
+* Added in default TTL options to pass to the cache
+
+# 0.0.10
+
+* Added ability to set redis host/port via options
+
 # 0.0.9
 
 * Fix test errors caused by Redis error event-emitter 
