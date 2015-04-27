@@ -735,8 +735,7 @@ tests.forEach(function(test){
       it('should evict from cache based on the default TTL', function (done) {
         this.timeout(3000);
         var multiCache = new MultiCache(localCacheName, remoteCacheName, {'ttl': 1});
-        var ttl; //unset here to force the use of the options object
-        multiCache.set(key, 'myValue', ttl, function (err, result) {
+        multiCache.set(key, 'myValue', function (err, result) {
           assert(!err);
           assert(!_.isEmpty(result));
           // Check that key is in both local and remote cache
