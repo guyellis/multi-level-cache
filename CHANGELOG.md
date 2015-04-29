@@ -1,5 +1,9 @@
 # Change Log
 
+# 0.0.12
+
+* `set()` now requires a callback
+
 # 0.0.11
 
 * Added in default TTL options to pass to the cache
@@ -10,7 +14,7 @@
 
 # 0.0.9
 
-* Fix test errors caused by Redis error event-emitter 
+* Fix test errors caused by Redis error event-emitter
 * Add flushAll()
 
 # 0.0.8
@@ -31,7 +35,7 @@
 
 * Switch from JSHint to ESLint
 * Add a custom Error object: MultiError.
-* If key is not present in cache then `get()` will return a MultiError with 
+* If key is not present in cache then `get()` will return a MultiError with
   keyNotFound set to true.
 * Optional integration testing added.
 * Add ability to disable the cache.

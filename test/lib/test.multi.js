@@ -196,38 +196,6 @@ tests.forEach(function(test){
         });
       });
 
-      it('should set with two params on set()', function (done) {
-        var multiCache = new MultiCache(localCacheName, remoteCacheName, testBothActive);
-        multiCache.set(key, 'myValue');
-        // .set() is async so wait for 500ms before testing that the value
-        // has been set. We're doing this test to check the "else" branch
-        // in the target code.
-        setTimeout(function() {
-          multiCache.get(key, testLocalOnly, function (err, value) {
-            assert(!err);
-            assert(!_.isEmpty(value));
-            assert.equal(value, 'myValue');
-            // Test that key/value is in remoteCache
-            multiCache.get(key, testRemoteOnly, function (err, value) {
-              assert(!err);
-              assert(!_.isEmpty(value));
-              assert.equal(value, 'myValue');
-              done();
-            });
-          });
-        }, 500);
-      });
-
-      it('should throw with no callback and no caches on set()', function (done) {
-        var multiCache = new MultiCache(localCacheName, remoteCacheName, testBothInactive);
-        try {
-          multiCache.set(key, 'myValue');
-        } catch(e) {
-          assert.equal('local or remote must be specified when setting to cache', e.message);
-          done();
-        }
-      });
-
       it('should return an error for neither caches during set', function (done) {
         var multiCache = new MultiCache(localCacheName, remoteCacheName, testBothInactive);
         assert.notEqual(multiCache.localCache, multiCache.remoteCache);
@@ -258,7 +226,7 @@ tests.forEach(function(test){
 
     describe('Disabled', function() {
 
-      it('should noop on set when disabled with callback', function (done) {
+      it('should noop on set when disabled', function (done) {
         var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
         multiCache.set(key, 'myValue', function (err, result) {
           assert(!err);
@@ -267,18 +235,15 @@ tests.forEach(function(test){
         });
       });
 
-      it('should noop on set when disabled without callback', function (done) {
+      it('should return keyNotFound on get when disabled', function (done) {
         var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
-        multiCache.set(key, 'myValue');
-        setTimeout(function() {
-          multiCache.get(key, function (err, value) {
-            assert(err);
-            assert.equal(err.name, 'MultiError');
-            assert(err.keyNotFound);
-            assert.equal(undefined, value);
-            done();
-          });
-        }, 500);
+        multiCache.get(key, function(err, value){
+          assert(err);
+          assert.equal(err.name, 'MultiError');
+          assert(err.keyNotFound);
+          assert.equal(undefined, value);
+          done();
+        });
       });
 
       it('should noop on del when disabled', function (done) {
