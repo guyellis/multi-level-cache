@@ -6,7 +6,7 @@ Contact [@wildfiction](https://twitter.com/wildfiction) with questions.
 While we're working on the 0.x version of multi-level-cache the API might
 change. This will be documented in the (ChangeLog)[CHANGELOG.md]. Once
 we move to version 1.0.0 and beyond we'll following the standard semantic
-version from semver.org
+version from semver.org for Npm.
 
 [![Build Status](https://travis-ci.org/guyellis/multi-level-cache.svg?branch=master)](https://travis-ci.org/guyellis/multi-level-cache)
 [![Code Climate](https://codeclimate.com/github/guyellis/multi-level-cache/badges/gpa.svg)](https://codeclimate.com/github/guyellis/multi-level-cache)
@@ -43,18 +43,12 @@ multiCache.get('myKey', function(err, result) {
 
 * `localCache`
   * String, such as 'node-cache', representing a cache known by the system
-  to use as the local cache.
+  to use as the local cache OR:
   * Object/function that exposes the methods `set`, `get`, `del`
 * `remoteCache`
   * String, such as 'redis', representing a cache known by the system
-  to use as the remote cache.
+  to use as the remote cache OR:
   * Object/function that exposes the methods `set`, `get`, `del`
-* `disabled`
-  * Disable the cache to `noop` for get(), set(), del().
-  * `get()` will return `MultiError.KeyNotFoundError`
-  * `set()` and `del()` will do nothing.
-  * Useful for running load tests to compare performance with and without
-  the cache enabled.
 * `options`
   * `useLocalCache` - if set to a truthy value then by default the local
   cache will be active for all operations. If missing then will default
@@ -68,10 +62,8 @@ multiCache.get('myKey', function(err, result) {
   `remoteOptions` to an object to be used when creating the remote cache.
   * `ttl` - set a default ttl on call cache objects, may be overridden by
   setting the ttl during a `set` call.
-  * `disabled` - disable all cache options. This is to facilitate a testing
-  harness, or disabling during CI testing.
 
-## `set(key, value[, ttl, options, callback])`
+## `set(key, value, [ttl, options,] callback)`
 
 * `key`
   * The key to use in the cache

@@ -224,48 +224,6 @@ tests.forEach(function(test){
 
     });
 
-    describe('Disabled', function() {
-
-      it('should noop on set when disabled', function (done) {
-        var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
-        multiCache.set(key, 'myValue', function (err, result) {
-          assert(!err);
-          assert.equal(undefined, result);
-          done();
-        });
-      });
-
-      it('should return keyNotFound on get when disabled', function (done) {
-        var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
-        multiCache.get(key, function(err, value){
-          assert(err);
-          assert.equal(err.name, 'MultiError');
-          assert(err.keyNotFound);
-          assert.equal(undefined, value);
-          done();
-        });
-      });
-
-      it('should noop on del when disabled', function (done) {
-        var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
-        multiCache.del(key, function (err, result) {
-          assert.equal(undefined, err);
-          assert.equal(undefined, result);
-          done();
-        });
-      });
-
-      it('should noop on flushAll when disabled', function (done) {
-        var multiCache = new MultiCache(localCacheName, remoteCacheName, {disabled: true});
-        multiCache.flushAll(function (err, result) {
-          assert.equal(undefined, err);
-          assert.equal(undefined, result);
-          done();
-        });
-      });
-
-    });
-
     describe('Getting', function() {
       beforeEach(function(done){
         var multiCache = new MultiCache(localCacheName, remoteCacheName);

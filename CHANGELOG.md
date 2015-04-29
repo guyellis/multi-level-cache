@@ -3,6 +3,7 @@
 # 0.0.12
 
 * `set()` now requires a callback
+* Remove disabled option
 
 # 0.0.11
 
