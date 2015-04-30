@@ -36,6 +36,10 @@
     "memcached"
   ],
   "author": "Guy Ellis <wildfiction@gmail.com>",
+  "contributors": [
+    "Robert Myers <ccrider@whiterose.net>",
+    "William Riley-Land <william@kun.io>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/guyellis/multi-level-cache/issues"
