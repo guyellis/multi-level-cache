@@ -4,6 +4,7 @@
 
 * `set()` now requires a callback
 * Remove disabled option
+* Redis manages errors internally and exposes through API on next call.
 
 # 0.0.11
 

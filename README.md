@@ -135,6 +135,21 @@ a load-balanced cluster of servers. Many of these use cases will also apply to s
 instances that want to maintain a local cache backed by a remote cache for fast start times
 and redundancy or memory efficiency (LRU) in the local cache.
 
+# Redis Adapter
+
+To change the host and port from the default for the Redis adapter simply
+pass a remoteOptions property to the constructor in the options param.
+```
+var redisOptions = {
+  host: 'http://my-redis-server', // IP/domain of your redis server
+  port: 9999                      // Port that redis is running on
+}
+var multiCache = new MultiCache(localCache, remoteCache, {
+    remoteOptions: redisOptions
+  });
+
+```
+
 ## Use Case: Immutable data from a slow source
 
 Need: Your application needs to retrieve immutable data from a source that is slow. Once you've
