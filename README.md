@@ -4,7 +4,7 @@ Multi Level Cache allows you to manage a local and remote cache with a single AP
 Contact [@wildfiction](https://twitter.com/wildfiction) with questions.
 
 While we're working on the 0.x version of multi-level-cache the API might
-change. This will be documented in the (ChangeLog)[CHANGELOG.md]. Once
+change. This will be documented in the [ChangeLog](CHANGELOG.md). Once
 we move to version 1.0.0 and beyond we'll following the standard semantic
 version from semver.org for Npm.
 
@@ -135,7 +135,7 @@ a load-balanced cluster of servers. Many of these use cases will also apply to s
 instances that want to maintain a local cache backed by a remote cache for fast start times
 and redundancy or memory efficiency (LRU) in the local cache.
 
-# Redis Adapter
+## Redis Adapter
 
 To change the host and port from the default for the Redis adapter simply
 pass a remoteOptions property to the constructor in the options param.
@@ -149,6 +149,8 @@ var multiCache = new MultiCache(localCache, remoteCache, {
   });
 
 ```
+
+# Use Cases
 
 ## Use Case: Immutable data from a slow source
 
