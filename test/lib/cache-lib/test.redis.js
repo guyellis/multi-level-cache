@@ -194,41 +194,44 @@ describe('redis adapter', function(){
     });
   });
 
-  it('should use default options if no options set', function () {
-    var redisStub = sinon.stub(redis, 'createClient').returns({});
+  describe('Redis adapter options passing', function(){
+    it('should use default options if no options set', function () {
+      var redisStub = sinon.stub(redis, 'createClient').returns({});
 
-    redisAdapter();
-    assert(redisStub.calledOnce);
-    assert(redisStub.calledWithExactly());
+      redisAdapter();
+      assert(redisStub.calledOnce);
+      assert(redisStub.calledWithExactly());
 
-    redisStub.restore();
+      redisStub.restore();
+    });
+
+    it('should use an options object if passed in', function () {
+      var redisStub = sinon.stub(redis, 'createClient').returns({});
+      var options = {};
+
+      redisAdapter(options);
+      assert(redisStub.calledOnce);
+      assert(redisStub.calledWithExactly(options));
+
+      redisStub.restore();
+    });
+
+    it('should use host and port if passed in', function () {
+      var redisStub = sinon.stub(redis, 'createClient').returns({});
+      var options = {
+        host: 'localhost',
+        port: 123123,
+        x: 'y'
+      };
+
+      redisAdapter(options);
+      assert(redisStub.calledOnce);
+      assert(redisStub.calledWithExactly(options.port, options.host, options));
+
+      redisStub.restore();
+    });
   });
 
-  it('should use an options object if passed in', function () {
-    var redisStub = sinon.stub(redis, 'createClient').returns({});
-    var options = {};
-
-    redisAdapter(options);
-    assert(redisStub.calledOnce);
-    assert(redisStub.calledWithExactly(options));
-
-    redisStub.restore();
-  });
-
-  it('should use host and port if passed in', function () {
-    var redisStub = sinon.stub(redis, 'createClient').returns({});
-    var options = {
-      host: 'localhost',
-      port: 123123,
-      x: 'y'
-    };
-
-    redisAdapter(options);
-    assert(redisStub.calledOnce);
-    assert(redisStub.calledWithExactly(options.port, options.host, options));
-
-    redisStub.restore();
-  });
 
   describe('Redis error recovery', function(){
     it('should recover when redis recovers', function(done) {
