@@ -1,5 +1,9 @@
 # Change Log
 
+# 0.0.13
+
+* `stats` - new API method
+
 # 0.0.12
 
 * `set()` now requires a callback
