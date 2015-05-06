@@ -9,7 +9,7 @@ var sinon = require('sinon');
 var redis = require('redis');
 var redisAdapter = require('../../../lib/cache-lib/redis');
 
-/*eslint-disable max-statements */
+/* eslint-disable max-statements */
 describe('redis adapter', function(){
 
   it('should call callback if redis returns an error in get', function(done) {
@@ -170,6 +170,52 @@ describe('redis adapter', function(){
     });
   });
 
+  it('should call stats', function(done){
+    var clientStub = {
+      'keys': function(pattern, callback) {
+        callback(null, [1, 2, 3]);
+      },
+      server_info: {
+        some: 'info'
+      },
+      on: _.noop
+    };
+    var redisStub = sinon.stub(redis, 'createClient', function() {
+      return clientStub;
+    });
+
+    var redisPlugin = redisAdapter({});
+    redisPlugin.stats(function(err, stats){
+      assert(!err);
+      assert(stats);
+      assert.equal(stats.name, 'redis');
+      assert.equal(stats.keys, 3);
+      assert.equal(stats.custom.some, 'info');
+      redisStub.restore();
+      done();
+    });
+  });
+
+  it('should handle error in stats', function(done){
+    var clientStub = {
+      'keys': function(pattern, callback) {
+        callback(new Error('fake error'));
+      },
+      on: _.noop
+    };
+    var redisStub = sinon.stub(redis, 'createClient', function() {
+      return clientStub;
+    });
+
+    var redisPlugin = redisAdapter({});
+    redisPlugin.stats(function(err, stats){
+      assert(err);
+      assert(!stats);
+      redisStub.restore();
+      done();
+    });
+  });
+
   it('should not parse strings as dates that contain dates but are not dates', function (done) {
 
     var clientStub = {
@@ -316,7 +362,14 @@ describe('redis adapter', function(){
       });
     });
 
+    it('should callback in error state when calling stats', function(done) {
+      redisPlugin.stats(function (err) {
+        assert(err);
+        assert.equal(err.message, errMsg);
+        done();
+      });
+    });
   });
 
 });
-/*eslint-enable max-statements */
+/* eslint-enable max-statements */

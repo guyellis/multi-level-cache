@@ -689,5 +689,54 @@ tests.forEach(function(test){
         });
       });
     });
+
+    describe('Stats', function(){
+      beforeEach(function(done){
+        var multiCache = new MultiCache(localCacheName, remoteCacheName);
+        multiCache.flushAll(done);
+      });
+
+      it('should set keys in caches and get stats', function (done) {
+        var multiCache = new MultiCache(localCacheName, remoteCacheName);
+        var keyValues = [
+          { key: 'key1', value: 'value1'},
+          { key: 'key2', value: 'value2'},
+          { key: 'key3', value: 'value3'}
+        ];
+        async.each(keyValues, function(keyValue, callback){
+          multiCache.set(keyValue.key, keyValue.value, function (err, result) {
+            assert(!err);
+            assert(result);
+            callback(err);
+          });
+        }, function(err){
+          assert(!err);
+          multiCache.stats(testLocalOnly, function(err, stats){
+            assert(!err);
+            assert(_.isArray(stats));
+            assert.equal(1, stats.length);
+            assert.equal(stats[0].name, localCacheName);
+            assert.equal(stats[0].keys, 3);
+            multiCache.stats(testRemoteOnly, function(err, stats){
+              assert(!err);
+              assert(_.isArray(stats));
+              assert.equal(1, stats.length);
+              assert.equal(stats[0].name, remoteCacheName);
+              assert.equal(stats[0].keys, 3);
+              multiCache.stats(function(err, stats){
+                assert(!err);
+                assert(_.isArray(stats));
+                assert.equal(2, stats.length);
+                assert.equal(stats[0].name, localCacheName);
+                assert.equal(stats[1].name, remoteCacheName);
+                assert.equal(stats[0].keys, 3);
+                assert.equal(stats[1].keys, 3);
+                done();
+              });
+            });
+          });
+        });
+      });
+    });
   });
 });
