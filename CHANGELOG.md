@@ -1,5 +1,9 @@
 # Change Log
 
+# 0.0.14
+
+* Remove packed directory from Npmjs (no functional changes)
+
 # 0.0.13
 
 * `stats` - new API method
