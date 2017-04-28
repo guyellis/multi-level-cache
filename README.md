@@ -1,5 +1,7 @@
 # Multi Level Cache
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/guyellis/multi-level-cache.svg)](https://greenkeeper.io/)
+
 Multi Level Cache allows you to manage a local and remote cache with a single API/module.
 Contact [@wildfiction](https://twitter.com/wildfiction) with questions.
 
