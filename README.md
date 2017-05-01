@@ -1,6 +1,5 @@
 # Multi Level Cache
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/guyellis/multi-level-cache.svg)](https://greenkeeper.io/)
 
 Multi Level Cache allows you to manage a local and remote cache with a single API/module.
 Contact [@wildfiction](https://twitter.com/wildfiction) with questions.
@@ -10,10 +9,10 @@ change. This will be documented in the [ChangeLog](CHANGELOG.md). Once
 we move to version 1.0.0 and beyond we'll following the standard semantic
 version from semver.org for Npm.
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/guyellis/multi-level-cache.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/guyellis/multi-level-cache.svg?branch=master)](https://travis-ci.org/guyellis/multi-level-cache)
 [![Code Climate](https://codeclimate.com/github/guyellis/multi-level-cache/badges/gpa.svg)](https://codeclimate.com/github/guyellis/multi-level-cache)
 [![Dependency Status](https://david-dm.org/guyellis/multi-level-cache.png)](https://david-dm.org/guyellis/multi-level-cache)
-[ ![Codeship Status for guyellis/multi-level-cache](https://codeship.com/projects/3d73f870-c9e3-0132-08ef-462805db91a7/status?branch=master)](https://codeship.com/projects/75363)
 
 # Install:
 
