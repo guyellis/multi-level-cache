@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "eslint": "3.19.0",
-    "istanbul": "^0.3.13",
+    "istanbul": "0.4.5",
     "mocha": "^2.2.4",
     "pre-commit": "^1.0.6",
     "sinon": "^1.14.1"
