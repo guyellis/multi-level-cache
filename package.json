@@ -61,5 +61,5 @@
     "pre-commit-update": "npm update",
     "test": "node_modules/.bin/mocha --recursive"
   },
-  "version": "0.0.14"
+  "version": "1.0.0"
 }
