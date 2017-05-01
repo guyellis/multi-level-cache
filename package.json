@@ -50,7 +50,7 @@
     "debug": "2.6.6",
     "lodash": "4.17.4",
     "node-cache": "4.1.1",
-    "redis": "0.12.1"
+    "redis": "2.7.1"
   },
   "devDependencies": {
     "eslint": "3.19.0",
