@@ -1,5 +1,14 @@
 # Change Log
 
+# 1.0.0
+
+* Node versions supported changes from 0.10 & 0.12 to 6.0.0, 7.0.0, 7.9.0
+* Travis to run from package.json instead of a Makefile
+* Update dependencies
+* Move module version to 1.0.0
+* No functional changes
+* No bug fixes
+
 # 0.0.14
 
 * Remove packed directory from Npmjs (no functional changes)

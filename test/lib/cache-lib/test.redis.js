@@ -223,7 +223,7 @@ describe('redis adapter', function(){
       // increasing testing here to include parser revive function
       'get': sinon.stub().callsArgWith(1, null,
         '{"a":"{foo:2015-04-21T04:58:20.648Z}","b":"something"}'),
-        on: _.noop
+      on: _.noop
     };
     var redisStub = sinon.stub(redis, 'createClient', function() {
       return clientStub;
@@ -300,9 +300,9 @@ describe('redis adapter', function(){
         assert.equal(undefined, value);
         // Now have redis recover and try the operation again
         clientEventEmitter.emit('ready');
-        redisPlugin.get('testkey', function (err, value) {
-          assert(!err);
-          assert.deepEqual(value, testGetValue);
+        redisPlugin.get('testkey', function (err2, value2) {
+          assert(!err2);
+          assert.deepEqual(value2, testGetValue);
 
           redisStub.restore();
           done();

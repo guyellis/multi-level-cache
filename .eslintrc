@@ -3,31 +3,23 @@
     "node": true
   },
   "rules": {
-    "no-bitwise": true,
-    "camelcase": true,
-    "curly": true,
-    "eqeqeq": true,
-    "forin": true,
-    "freeze": true,
-    "immed": true,
+    "no-bitwise": 2,
+    "curly": 2,
+    "eqeqeq": 2,
     "indent": [2,2],
-    "no-shadow": false,
-    "latedef": true,
-    "newcap": true,
-    "noarg": true,
-    "noempty": true,
-    "nonew": true,
-    "strict": true,
-    "quotes": "single",
-    "max-depth": 3,
-    "trailing": true,
-    "max-statements": 15,
+    "no-shadow": 2,
+    "strict": 2,
+    "quotes": [2, "single"],
+    "max-depth": [2, 3],
+    "max-statements": [2, 15],
     "max-len": [2,100,4],
-    "eqnull": true,
-    "funcscope": true,
-    "undef": true,
-    "unused": true,
-    "node": true,
-    "no-underscore-dangle": false
+    "no-underscore-dangle": [2, {
+      "allow": [
+        "_set",
+        "_useLocalCache",
+        "_useMethods",
+        "_useRemoteCache"
+      ]
+    }]
   }
 }
