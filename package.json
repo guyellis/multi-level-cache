@@ -46,7 +46,7 @@
   },
   "homepage": "https://github.com/guyellis/multi-level-cache",
   "dependencies": {
-    "async": "0.9.0",
+    "async": "2.4.0",
     "debug": "2.1.3",
     "lodash": "3.8.0",
     "node-cache": "2.1.1",
