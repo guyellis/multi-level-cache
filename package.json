@@ -9,7 +9,7 @@
   ],
   "dependencies": {
     "async": "2.4.0",
-    "debug": "2.6.7",
+    "debug": "2.6.8",
     "lodash": "4.17.4",
     "node-cache": "4.1.1",
     "redis": "2.7.1"
