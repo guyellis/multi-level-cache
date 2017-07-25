@@ -12,9 +12,15 @@ var redisAdapter = require('../../../lib/cache-lib/redis');
 /* eslint-disable max-statements */
 describe('redis adapter', function(){
 
+  var redisStub;
+
+  afterEach(function(){
+    redisStub.restore();
+  });
+
   it('should call callback if redis returns an error in get', function(done) {
 
-    var redisStub = sinon.stub(redis, 'createClient', function () {
+    redisStub = sinon.stub(redis, 'createClient', function () {
       return {
         get: function (key, callback) {
           return callback('fake error');
@@ -29,14 +35,13 @@ describe('redis adapter', function(){
       assert(err);
       assert.equal('fake error', err);
       assert.equal(undefined, value);
-      redisStub.restore();
       done();
     });
   });
 
   it('should call callback if redis returns an error in set', function(done) {
 
-    var redisStub = sinon.stub(redis, 'createClient', function () {
+    redisStub = sinon.stub(redis, 'createClient', function () {
       return {
         set: function (key, value, callback) {
           return callback('fake error');
@@ -51,7 +56,6 @@ describe('redis adapter', function(){
       assert(err);
       assert.equal('fake error', err);
       assert.equal(undefined, value);
-      redisStub.restore();
       done();
     });
   });
@@ -61,33 +65,29 @@ describe('redis adapter', function(){
       'set': sinon.stub().callsArg(2),
       on: _.noop
     };
-    var redisStub = sinon.stub(redis, 'createClient', function(){
+    redisStub = sinon.stub(redis, 'createClient', function(){
       return clientStub;
     });
 
     var redisPlugin = redisAdapter({});
     redisPlugin.set('testkey', 'testvalue', function(){
       assert.equal(clientStub.set.callCount, 1);
-      redisStub.restore();
       done();
     });
   });
 
   it('should call set a key with a TTL', function(done){
     var clientStub = {
-      'set': sinon.stub().callsArg(2),
-      'expire': sinon.stub().callsArg(2),
+      'set': sinon.stub().callsArg(4),
       on: _.noop
     };
-    var redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient', function() {
       return clientStub;
     });
 
     var redisPlugin = redisAdapter({});
     redisPlugin.set('testkey', 'testvalue', 15, function(){
       assert.equal(clientStub.set.callCount, 1);
-      assert.equal(clientStub.expire.callCount, 1);
-      redisStub.restore();
       done();
     });
   });
@@ -99,14 +99,13 @@ describe('redis adapter', function(){
       'get': sinon.stub().callsArgWith(1, null, '{"a":"2015-04-21T04:58:20.648Z","b":"something"}'),
       on: _.noop
     };
-    var redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient', function() {
       return clientStub;
     });
 
     var redisPlugin = redisAdapter({});
     redisPlugin.get('testkey', function(){
       assert.equal(clientStub.get.callCount, 1);
-      redisStub.restore();
       done();
     });
 
@@ -117,7 +116,7 @@ describe('redis adapter', function(){
       'get': sinon.stub().callsArgWith(1, null, null),
       on: _.noop
     };
-    var redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient', function() {
       return clientStub;
     });
 
@@ -129,7 +128,6 @@ describe('redis adapter', function(){
       assert.equal('Key not found in cache', err.message);
       assert.equal(result, undefined);
       assert.equal(clientStub.get.callCount, 1);
-      redisStub.restore();
       done();
     });
   });
@@ -139,14 +137,13 @@ describe('redis adapter', function(){
       'del': sinon.stub().callsArg(1),
       on: _.noop
     };
-    var redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient', function() {
       return clientStub;
     });
 
     var redisPlugin = redisAdapter({});
     redisPlugin.del('testkey', function(){
       assert.equal(clientStub.del.callCount, 1);
-      redisStub.restore();
       done();
     });
   });
@@ -158,14 +155,13 @@ describe('redis adapter', function(){
       },
       on: _.noop
     };
-    var redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient', function() {
       return clientStub;
     });
 
     var redisPlugin = redisAdapter({});
     redisPlugin.flushAll(function(err){
       assert(!err);
-      redisStub.restore();
       done();
     });
   });
@@ -180,7 +176,7 @@ describe('redis adapter', function(){
       },
       on: _.noop
     };
-    var redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient', function() {
       return clientStub;
     });
 
@@ -191,7 +187,6 @@ describe('redis adapter', function(){
       assert.equal(stats.name, 'redis');
       assert.equal(stats.keys, 3);
       assert.equal(stats.custom.some, 'info');
-      redisStub.restore();
       done();
     });
   });
@@ -203,7 +198,7 @@ describe('redis adapter', function(){
       },
       on: _.noop
     };
-    var redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient', function() {
       return clientStub;
     });
 
@@ -211,7 +206,6 @@ describe('redis adapter', function(){
     redisPlugin.stats(function(err, stats){
       assert(err);
       assert(!stats);
-      redisStub.restore();
       done();
     });
   });
@@ -225,7 +219,7 @@ describe('redis adapter', function(){
         '{"a":"{foo:2015-04-21T04:58:20.648Z}","b":"something"}'),
       on: _.noop
     };
-    var redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient', function() {
       return clientStub;
     });
 
@@ -235,35 +229,34 @@ describe('redis adapter', function(){
       assert(!cachedValue.a.getTime || !isNaN(cachedValue.a.getTime()));
       assert.equal(typeof cachedValue.a, 'string');
       assert.equal(clientStub.get.callCount, 1);
-      redisStub.restore();
       done();
     });
   });
 
   describe('Redis adapter options passing', function(){
+    afterEach(function(){
+      redisStub.restore();
+    });
+
     it('should use default options if no options set', function () {
-      var redisStub = sinon.stub(redis, 'createClient').returns({});
+      redisStub = sinon.stub(redis, 'createClient').returns({});
 
       redisAdapter();
       assert(redisStub.calledOnce);
       assert(redisStub.calledWithExactly());
-
-      redisStub.restore();
     });
 
     it('should use an options object if passed in', function () {
-      var redisStub = sinon.stub(redis, 'createClient').returns({});
+      redisStub = sinon.stub(redis, 'createClient').returns({});
       var options = {};
 
       redisAdapter(options);
       assert(redisStub.calledOnce);
       assert(redisStub.calledWithExactly(options));
-
-      redisStub.restore();
     });
 
     it('should use host and port if passed in', function () {
-      var redisStub = sinon.stub(redis, 'createClient').returns({});
+      redisStub = sinon.stub(redis, 'createClient').returns({});
       var options = {
         host: 'localhost',
         port: 123123,
@@ -273,8 +266,6 @@ describe('redis adapter', function(){
       redisAdapter(options);
       assert(redisStub.calledOnce);
       assert(redisStub.calledWithExactly(options.port, options.host, options));
-
-      redisStub.restore();
     });
   });
 
@@ -282,7 +273,7 @@ describe('redis adapter', function(){
   describe('Redis error recovery', function(){
     it('should recover when redis recovers', function(done) {
       var errMsg = 'fake error from event';
-      var redisPlugin, redisStub;
+      var redisPlugin;
       var testGetValue = {x: 'myTestValue'};
       var clientEventEmitter = new EventEmitter();
       clientEventEmitter.get = function(key, callback) {
@@ -313,7 +304,7 @@ describe('redis adapter', function(){
 
   describe('Redis error state', function(){
     var errMsg = 'fake error from event';
-    var redisPlugin, redisStub;
+    var redisPlugin;
     beforeEach(function(done){
       var clientEventEmitter = new EventEmitter();
       redisStub = sinon.stub(redis, 'createClient', function () {
