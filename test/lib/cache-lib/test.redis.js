@@ -20,7 +20,7 @@ describe('redis adapter', function(){
 
   it('should call callback if redis returns an error in get', function(done) {
 
-    redisStub = sinon.stub(redis, 'createClient', function () {
+    redisStub = sinon.stub(redis, 'createClient').callsFake(function () {
       return {
         get: function (key, callback) {
           return callback('fake error');
@@ -41,7 +41,7 @@ describe('redis adapter', function(){
 
   it('should call callback if redis returns an error in set', function(done) {
 
-    redisStub = sinon.stub(redis, 'createClient', function () {
+    redisStub = sinon.stub(redis, 'createClient').callsFake(function () {
       return {
         set: function (key, value, callback) {
           return callback('fake error');
@@ -65,7 +65,7 @@ describe('redis adapter', function(){
       'set': sinon.stub().callsArg(2),
       on: _.noop
     };
-    redisStub = sinon.stub(redis, 'createClient', function(){
+    redisStub = sinon.stub(redis, 'createClient').callsFake(function(){
       return clientStub;
     });
 
@@ -81,7 +81,7 @@ describe('redis adapter', function(){
       'set': sinon.stub().callsArg(4),
       on: _.noop
     };
-    redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
     });
 
@@ -99,7 +99,7 @@ describe('redis adapter', function(){
       'get': sinon.stub().callsArgWith(1, null, '{"a":"2015-04-21T04:58:20.648Z","b":"something"}'),
       on: _.noop
     };
-    redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
     });
 
@@ -116,7 +116,7 @@ describe('redis adapter', function(){
       'get': sinon.stub().callsArgWith(1, null, null),
       on: _.noop
     };
-    redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
     });
 
@@ -137,7 +137,7 @@ describe('redis adapter', function(){
       'del': sinon.stub().callsArg(1),
       on: _.noop
     };
-    redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
     });
 
@@ -155,7 +155,7 @@ describe('redis adapter', function(){
       },
       on: _.noop
     };
-    redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
     });
 
@@ -176,7 +176,7 @@ describe('redis adapter', function(){
       },
       on: _.noop
     };
-    redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
     });
 
@@ -198,7 +198,7 @@ describe('redis adapter', function(){
       },
       on: _.noop
     };
-    redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
     });
 
@@ -219,7 +219,7 @@ describe('redis adapter', function(){
         '{"a":"{foo:2015-04-21T04:58:20.648Z}","b":"something"}'),
       on: _.noop
     };
-    redisStub = sinon.stub(redis, 'createClient', function() {
+    redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
     });
 
@@ -279,7 +279,7 @@ describe('redis adapter', function(){
       clientEventEmitter.get = function(key, callback) {
         return callback(null, JSON.stringify(testGetValue));
       };
-      redisStub = sinon.stub(redis, 'createClient', function () {
+      redisStub = sinon.stub(redis, 'createClient').callsFake(function () {
         return clientEventEmitter;
       });
       redisPlugin = redisAdapter({});
@@ -307,7 +307,7 @@ describe('redis adapter', function(){
     var redisPlugin;
     beforeEach(function(done){
       var clientEventEmitter = new EventEmitter();
-      redisStub = sinon.stub(redis, 'createClient', function () {
+      redisStub = sinon.stub(redis, 'createClient').callsFake(function () {
         return clientEventEmitter;
       });
       redisPlugin = redisAdapter({});

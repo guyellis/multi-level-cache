@@ -32,10 +32,11 @@ function mockRedis() {
   if(!isIntegrationTest) {
     var connectionGoneStub, onErrorStub;
     before(function () {
-      connectionGoneStub = sinon.stub(redis.RedisClient.prototype, 'connection_gone', function () {
-        // do nothing
-      });
-      onErrorStub = sinon.stub(redis.RedisClient.prototype, 'on_error', function () {
+      connectionGoneStub = sinon.stub(redis.RedisClient.prototype, 'connection_gone')
+        .callsFake(function () {
+          // do nothing
+        });
+      onErrorStub = sinon.stub(redis.RedisClient.prototype, 'on_error').callsFake(function () {
         // do nothing
       });
     });
@@ -272,7 +273,7 @@ tests.forEach(function(test){
 
       it('should handle the local cache returning an error on get', function (done) {
         var multiCache = new MultiCache(localCacheName, remoteCacheName, testBothActive);
-        var localStub = sinon.stub(multiCache.localCache, 'get', function(keys, callback){
+        var localStub = sinon.stub(multiCache.localCache, 'get').callsFake(function(keys, callback){
           return callback('fake error', 'fake value');
         });
         multiCache.set(key, 'myValue', function (err, result) {
@@ -289,9 +290,10 @@ tests.forEach(function(test){
 
       it('should handle the remote cache returning an error on get', function (done) {
         var multiCache = new MultiCache(localCacheName, remoteCacheName, testBothActive);
-        var remoteStub = sinon.stub(multiCache.remoteCache, 'get', function(keys, callback){
-          return callback('fake error', 'fake value');
-        });
+        var remoteStub = sinon.stub(multiCache.remoteCache, 'get')
+          .callsFake(function(keys, callback){
+            return callback('fake error', 'fake value');
+          });
         multiCache.set(key, 'myValue', testRemoteOnly, function (err, result) {
           assert(!err);
           assert(!_.isEmpty(result));
