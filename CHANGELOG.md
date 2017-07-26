@@ -1,5 +1,9 @@
 # Change Log
 
+# 1.0.1
+
+* Fix bug stemming from non-transaction safe setting of data + TTL
+
 # 1.0.0
 
 * Node versions supported changes from 0.10 & 0.12 to 6.0.0, 7.0.0, 7.9.0
