@@ -4,11 +4,6 @@
 Multi Level Cache allows you to manage a local and remote cache with a single API/module.
 Contact [@wildfiction](https://twitter.com/wildfiction) with questions.
 
-While we're working on the 0.x version of multi-level-cache the API might
-change. This will be documented in the [ChangeLog](CHANGELOG.md). Once
-we move to version 1.0.0 and beyond we'll following the standard semantic
-version from semver.org for Npm.
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/guyellis/multi-level-cache.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/guyellis/multi-level-cache.svg?branch=master)](https://travis-ci.org/guyellis/multi-level-cache)
 [![Code Climate](https://codeclimate.com/github/guyellis/multi-level-cache/badges/gpa.svg)](https://codeclimate.com/github/guyellis/multi-level-cache)
