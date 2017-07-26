@@ -6,7 +6,7 @@ var NodeCache = require('node-cache');
 
 describe('node-cache adapter', function(){
   it('should call callback if node-cache returns an error in keys', function(done){
-    var nodeCacheStub = sinon.stub(NodeCache.prototype, 'keys', function(callback){
+    var nodeCacheStub = sinon.stub(NodeCache.prototype, 'keys').callsFake(function(callback){
       return callback('fake error');
     });
 
@@ -20,7 +20,7 @@ describe('node-cache adapter', function(){
   });
 
   it('should call callback if node-cache returns an error in get', function(done){
-    var nodeCacheStub = sinon.stub(NodeCache.prototype, 'get', function(key, callback){
+    var nodeCacheStub = sinon.stub(NodeCache.prototype, 'get').callsFake(function(key, callback){
       return callback('fake error');
     });
 
