@@ -18,7 +18,7 @@
   "devDependencies": {
     "eslint": "4.6.1",
     "istanbul": "0.4.5",
-    "mocha": "3.5.2",
+    "mocha": "3.5.3",
     "pre-commit": "^1.0.6",
     "sinon": "3.2.1"
   },
