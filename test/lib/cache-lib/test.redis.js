@@ -1,7 +1,7 @@
 'use strict';
 
 var EventEmitter = require('events').EventEmitter;
-var _ = require('lodash');
+var noop = require('lodash/noop');
 var assert = require('assert');
 var sinon = require('sinon');
 
@@ -63,7 +63,7 @@ describe('redis adapter', function(){
   it('should call set a key with no TTL', function(done){
     var clientStub = {
       'set': sinon.stub().callsArg(2),
-      on: _.noop
+      on: noop
     };
     redisStub = sinon.stub(redis, 'createClient').callsFake(function(){
       return clientStub;
@@ -79,7 +79,7 @@ describe('redis adapter', function(){
   it('should call set a key with a TTL', function(done){
     var clientStub = {
       'set': sinon.stub().callsArg(4),
-      on: _.noop
+      on: noop
     };
     redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
@@ -97,7 +97,7 @@ describe('redis adapter', function(){
       // the value returned from redis is pure JSON, needs to be literal here
       // increasing testing here to include parser revive function
       'get': sinon.stub().callsArgWith(1, null, '{"a":"2015-04-21T04:58:20.648Z","b":"something"}'),
-      on: _.noop
+      on: noop
     };
     redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
@@ -114,7 +114,7 @@ describe('redis adapter', function(){
   it('should callback with KeyNotFoundError if there is no key', function(done){
     var clientStub = {
       'get': sinon.stub().callsArgWith(1, null, null),
-      on: _.noop
+      on: noop
     };
     redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
@@ -135,7 +135,7 @@ describe('redis adapter', function(){
   it('should call delete a key', function(done){
     var clientStub = {
       'del': sinon.stub().callsArg(1),
-      on: _.noop
+      on: noop
     };
     redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
@@ -153,7 +153,7 @@ describe('redis adapter', function(){
       'flushall': function(callback) {
         callback();
       },
-      on: _.noop
+      on: noop
     };
     redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
@@ -174,7 +174,7 @@ describe('redis adapter', function(){
       server_info: {
         some: 'info'
       },
-      on: _.noop
+      on: noop
     };
     redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
@@ -196,7 +196,7 @@ describe('redis adapter', function(){
       'keys': function(pattern, callback) {
         callback(new Error('fake error'));
       },
-      on: _.noop
+      on: noop
     };
     redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
@@ -217,7 +217,7 @@ describe('redis adapter', function(){
       // increasing testing here to include parser revive function
       'get': sinon.stub().callsArgWith(1, null,
         '{"a":"{foo:2015-04-21T04:58:20.648Z}","b":"something"}'),
-      on: _.noop
+      on: noop
     };
     redisStub = sinon.stub(redis, 'createClient').callsFake(function() {
       return clientStub;
