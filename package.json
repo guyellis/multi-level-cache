@@ -20,7 +20,7 @@
     "istanbul": "0.4.5",
     "mocha": "4.0.1",
     "pre-commit": "^1.0.6",
-    "sinon": "4.1.0"
+    "sinon": "4.1.1"
   },
   "engines": {
     "node": ">= 6.0.0"
