@@ -14,6 +14,6 @@ NODE_MULTICACHE_TESTTYPE="integration" npm test
 
 ## Adding a new method to all Adapters
 
-[This commit]() is a good example of how the flushAll() method was added to the project.
+[This commit](https://github.com/guyellis/multi-level-cache/commit/3ab765ba68e554ae2d79eb97900263acef525eae) is a good example of how the flushAll() method was added to the project.
 Use this as a template if you plan on adding a new method. Remember it has to be implemented
 for each adapter.

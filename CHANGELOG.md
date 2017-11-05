@@ -1,5 +1,12 @@
 # Change Log
 
+# 1.1.0
+
+- Only require parts of lodash that are used. (Thanks @bnolens)
+- Change Travis tested Node versions to 6, 7, 8, 9 (i.e. add support for Node 9)
+- Update all dependencies to latest versions
+- package-lock.json file removed
+
 # 1.0.0
 
 * Node versions supported changes from 0.10 & 0.12 to 6.0.0, 7.0.0, 7.9.0
