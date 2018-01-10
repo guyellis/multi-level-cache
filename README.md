@@ -176,7 +176,7 @@ Use:
 * Both the local and remote caches are checked and do not find the data.
 * You retrieve the data from the slow source and do a `set()` which places it in both caches.
 * The next time this server needs that data it will do a `get()` and check the local cache first.
-  It finds the data in the local cache and returns that will no network request.
+  It finds the data in the local cache and returns that with no network request.
 * Another server in the cluster needs this data. It does a `get()` on the cache for the data. It
   first checks the local cache but that is empty. The remote cache, however, has the data and returns
   it bypassing the need to go to the slow source. Because the `setLocal` flag has been set it also
@@ -187,7 +187,7 @@ Use:
 
 Need: You have data that is built by making several (possibly expensive) DB calls and processing
 that data with your business rules. Once the data has been assembled it's good for a given period
-of time because the underlying data rarely changes. It's also okay if the server are out-of-sync
+of time because the underlying data rarely changes. It's also okay if the servers are out-of-sync
 for a short period of time.
 
 Use:
@@ -216,7 +216,7 @@ Use:
 * If it is not then call the API to update both local and remote cache.
 * Other servers in the cluster will get the benefit of this server updating the remote cache
 when their local last-updated-time expires.
-* Your calls to the API have reduced and aleviated your rate limit problem.
+* Your calls to the API have reduced and alleviated your rate limit problem.
 
 ## Use Case: Comparing caches
 
