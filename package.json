@@ -16,7 +16,7 @@
   },
   "description": "Manage local and remote caches with a single API",
   "devDependencies": {
-    "eslint": "4.17.0",
+    "eslint": "4.18.0",
     "istanbul": "0.4.5",
     "mocha": "5.0.1",
     "pre-commit": "^1.0.6",
