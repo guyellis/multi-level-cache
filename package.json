@@ -23,7 +23,7 @@
     "sinon": "7.3.1"
   },
   "engines": {
-    "node": ">= 6.0.0"
+    "node": ">= 8.0.0"
   },
   "homepage": "https://github.com/guyellis/multi-level-cache",
   "keywords": [
@@ -61,5 +61,5 @@
     "pre-commit-update": "npm update",
     "test": "node_modules/.bin/mocha --recursive"
   },
-  "version": "1.1.0"
+  "version": "2.0.0"
 }
