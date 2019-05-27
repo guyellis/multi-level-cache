@@ -8,7 +8,7 @@
     "William Riley-Land <william@kun.io>"
   ],
   "dependencies": {
-    "async": "2.6.2",
+    "async": "3.0.1",
     "debug": "4.1.1",
     "lodash": "4.17.11",
     "node-cache": "4.2.0",
